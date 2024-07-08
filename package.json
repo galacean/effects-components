@@ -1,0 +1,71 @@
+{
+  "name": "@galacean/effects-components",
+  "version": "0.1.0",
+  "description": "Galacean Effects components",
+  "module": "./es/index/index.mjs",
+  "main": "./dist/index.js",
+  "brower": "./dist/index.min.js",
+  "types": "./es/index.d.ts",
+  "files": [
+    "dist",
+    "es"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "preview": "concurrently \"vite build\" \"sleep 6 && vite preview\"",
+    "prebuild": "pnpm clean",
+    "build": "pnpm build:module",
+    "build:module": "rollup -c",
+    "build:demo": "vite build",
+    "build:docs": "pnpm build && typedoc",
+    "lint": "eslint --ext .ts .",
+    "lint:fix": "eslint --fix --ext .ts .",
+    "check:ts": "tsc -b ./tsconfig.check.json",
+    "clean": "rimraf dist es",
+    "prepare": "husky install",
+    "prepublishOnly": "pnpm build"
+  },
+  "browserslist": [
+    "iOS 9"
+  ],
+  "dependencies": {
+    "@galacean/effects": "1.6.2",
+    "bezier-easing": "^2.1.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@rollup/plugin-commonjs": "^21.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "@vitejs/plugin-legacy": "^4.1.1",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "eslint-plugin-compat": "^4.2.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "husky": "^9.0.11",
+    "lint-staged": "^11.2.6",
+    "pnpm": "^8.15.7",
+    "rimraf": "^5.0.8",
+    "rollup": "^2.79.1",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "tslib": "^2.6.2",
+    "typedoc": "^0.26.3",
+    "typescript": "^5.3.3",
+    "vite": "^4.5.3",
+    "vite-tsconfig-paths": "^4.2.2"
+  },
+  "contributors": [
+    {
+      "name": "十弦"
+    }
+  ],
+  "author": "Ant Group CO., Ltd.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

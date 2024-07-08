@@ -1,0 +1,12 @@
+{
+  "name": "Galacean Effects Components API",
+  "entryPoints": [
+    "components/index.ts",
+  ],
+  "out": "api",
+  "includeVersion": true,
+  "navigationLinks": {
+    "Galacean Effects": "https://galacean.antgroup.com/effects/",
+    "源码": "https://github.com/galacean/effects-components"
+  }
+}
