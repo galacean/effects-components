@@ -1,6 +1,4 @@
-import type {
-  Player, Disposable, SpriteVFXItem, VFXItem, VFXItemContent, CalculateVFXItem, Composition,
-} from '@galacean/effects';
+import type { Player, Disposable, VFXItem, Composition } from '@galacean/effects';
 import { math } from '@galacean/effects';
 import BezierEasing from 'bezier-easing';
 import { toRotate, toDegree, getValOnCubicBezier } from './utils';
@@ -70,7 +68,7 @@ export class Swiper implements Disposable {
    * 卡片数组
    * @internal
    */
-  private readonly cardItems: VFXItem<VFXItemContent>[] = [];
+  private readonly cardItems: VFXItem[] = [];
   private cardCount = 0;
   /**
    * degree 对应的弧度
@@ -125,11 +123,6 @@ export class Swiper implements Disposable {
    * @internal
    */
   private maxDragRotate: [number, number];
-  /**
-   * 是否被销毁
-   * @internal
-   */
-  private destroyed = false;
 
   /**
    *
@@ -170,9 +163,9 @@ export class Swiper implements Disposable {
       const index = items.findIndex(item => item.name === name);
 
       if (index < 0) {
-        throw new Error('DataError: node name can not match cardIdList, check json or cardIdList');
+        throw new Error('DataError: node name can not match cardIdList, check json or cardIdList.');
       } else {
-        const cardItem = items[index] as CalculateVFXItem;
+        const cardItem = items[index];
         const cardName = cardItem.name;
 
         // 未计算好位置之前先隐藏元素
@@ -201,7 +194,7 @@ export class Swiper implements Disposable {
    */
   gotoCardIndex (index: number) {
     if (index < 0 || index > this.cardCount - 1) {
-      console.error(`goCardError: Card index out of range, must in [0, ${this.cardCount - 1}]`);
+      console.error(`goCardError: Card index out of range, must in [0, ${this.cardCount - 1}].`);
 
       return;
     }
@@ -217,7 +210,7 @@ export class Swiper implements Disposable {
       return;
     }
     if (!this.cardCount) {
-      console.error('goCardError: data not ready');
+      console.error('goCardError: data not ready.');
 
       return;
     }
@@ -259,9 +252,9 @@ export class Swiper implements Disposable {
     for (let i = 0; i < this.cardItems.length; i++) {
       const item = this.cardItems[i];
 
-      if (!item.content) {
+      if (item.components.length === 0) {
         this.player.dispose();
-        throw new Error('DataError: item.content error');
+        throw new Error('DataError: item.content error.');
       }
     }
   }
@@ -289,16 +282,16 @@ export class Swiper implements Disposable {
 
   private updateTransform (transformList: ReturnType<typeof this.getTransform>) {
     if (!this.cardCount) {
-      console.error('this.cardItems is empty, ignore');
+      console.error('this.cardItems is empty, ignore.');
 
       return;
     }
 
     for (let i = 0; i < this.cardCount; i++) {
-      const item = this.cardItems[i] as SpriteVFXItem;
+      const item = this.cardItems[i];
 
-      if (!item.content) {
-        console.error('item.content not found, ignore');
+      if (item.components.length === 0) {
+        console.error('Components not found, ignore.');
 
         return;
       } else {
@@ -508,7 +501,6 @@ export class Swiper implements Disposable {
    * @param disposePlayer
    */
   dispose (disposePlayer = true): void {
-    this.destroyed = true;
     if (disposePlayer) {
       this.player?.dispose();
     }

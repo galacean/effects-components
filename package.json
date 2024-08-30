@@ -1,6 +1,6 @@
 {
   "name": "@galacean/effects-components",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Galacean Effects components",
   "module": "./es/index/index.mjs",
   "main": "./dist/index.js",
@@ -29,7 +29,7 @@
     "iOS 9"
   ],
   "dependencies": {
-    "@galacean/effects": "1.6.2",
+    "@galacean/effects": "^2.0.4",
     "bezier-easing": "^2.1.0"
   },
   "devDependencies": {
