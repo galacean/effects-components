@@ -29,7 +29,7 @@
     "iOS 9"
   ],
   "dependencies": {
-    "@galacean/effects": "^2.0.4",
+    "@galacean/effects": "^2.1.1",
     "bezier-easing": "^2.1.0"
   },
   "devDependencies": {
