@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@galacean/effects':
-    specifier: ^2.0.4
-    version: 2.0.4
+    specifier: ^2.1.2
+    version: 2.1.2
   bezier-easing:
     specifier: ^2.1.0
     version: 2.1.0
@@ -1727,12 +1727,13 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@galacean/effects-core@2.0.4:
-    resolution: {integrity: sha512-8n+0FonQy855Sf/r9J32m/DYg8JM9s79J+tOmrUkjePgJ7KtbOd2JrvX6OdNi/QrwH4TdFiign9ov9X4Vqhb2g==}
+  /@galacean/effects-core@2.1.2:
+    resolution: {integrity: sha512-Y+vjK0xY8ESC22+lRxCqA2Y3l2WIKT06QsdZaVkhNiZROFgVTLP0Aq1EGPlzUPLmKdVF2ec3n1cAn0jC31SwAA==}
     dependencies:
       '@galacean/effects-math': 1.1.0
-      '@galacean/effects-specification': 2.0.0
+      '@galacean/effects-specification': 2.1.0
       flatbuffers: 24.3.25
+      libtess: 1.2.2
       uuid: 9.0.1
     dev: false
 
@@ -1741,22 +1742,22 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: false
 
-  /@galacean/effects-specification@2.0.0:
-    resolution: {integrity: sha512-7ieZALZYn5fwKLIGAskmYSKGX82ZkLRdDUInG21KsOJ2eQ5+HcI6mJU5tmN8vjZxQUc+RVuUcssExGbiaj2+5w==}
+  /@galacean/effects-specification@2.1.0:
+    resolution: {integrity: sha512-gad/CBHvTlL182QExrPGqzafzfMjSEfVWRA4+mufHMvxlsDF0kEIvZ2EEcyG9IgvRkX81F1PU1vk+or6G1j2nw==}
     dev: false
 
-  /@galacean/effects-webgl@2.0.4:
-    resolution: {integrity: sha512-NMuQwftxmzqHb7fAD8N2zhkmpAuLeclkn/jpuMWc22AGrTB+JGgXk9nTN2I58eWFrNnJ/PgJQ7VsaOUii5Yt3A==}
+  /@galacean/effects-webgl@2.1.2:
+    resolution: {integrity: sha512-l2PXsspy921MHYtS6vU8HIy3KCeW/6fxz+6jUkeuD7+Ii0pAJ2o29lLW+ZC+4ZOt8iq5DeDu+BrKRuYm5XDxeQ==}
     dependencies:
-      '@galacean/effects-core': 2.0.4
+      '@galacean/effects-core': 2.1.2
       string-hash: 1.1.3
     dev: false
 
-  /@galacean/effects@2.0.4:
-    resolution: {integrity: sha512-1w1MdQz3tHXAbCA016hCHYk/+nxIDp7My9jYg5W+9uN8Ra/Y0OTKn1Fmog3kdHEh9evTkPAwVGpUMpyJJy6xGg==}
+  /@galacean/effects@2.1.2:
+    resolution: {integrity: sha512-kP+OujFGeVVtxRVMFGDo9M3Oz7/aRT21b0o4JBlMnpSvakz7TRwjJMQSOL6ym0VpctYdk2COFgnTvWrGh/5Ipw==}
     dependencies:
-      '@galacean/effects-core': 2.0.4
-      '@galacean/effects-webgl': 2.0.4
+      '@galacean/effects-core': 2.1.2
+      '@galacean/effects-webgl': 2.1.2
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
@@ -3336,6 +3337,10 @@ packages:
       prelude-ls: 1.2.1
       type-check: 0.4.0
     dev: true
+
+  /libtess@1.2.2:
+    resolution: {integrity: sha512-Nps8HPeVVcsmJxUvFLKVJcCgcz+1ajPTXDVAVPs6+giOQP4AHV31uZFFkh+CKow/bkB7GbZWKmwmit7myaqDSw==}
+    dev: false
 
   /lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}

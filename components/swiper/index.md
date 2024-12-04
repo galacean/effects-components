@@ -11,7 +11,6 @@ const player = new Player({
   container,
   notifyTouch: true,
   interactive: true,
-  pixelRatio: window.devicePixelRatio,
 });
 const composition = await player.loadScene('xx.json', {
   // 最长等待加载时间，超过则使用降级

@@ -11,7 +11,8 @@ export default defineConfig(({ mode }) => {
         input: {
           'index': resolve(__dirname, 'index.html'),
           'swiper': resolve(__dirname, 'components/swiper/demo/index.html'),
-        }
+          'animation': resolve(__dirname, 'components/animation/demo/index.html'),
+        },
       },
       minify: false, // iOS 9 等低版本加载压缩代码报脚本异常
     },

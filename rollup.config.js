@@ -28,6 +28,7 @@ export default (commandLineArgs) => {
     input: {
       index: 'components/index.ts',
       swiper: 'components/swiper/index.ts',
+      animation: 'components/animation/index.ts',
     },
     output: {
       dir: 'es',
