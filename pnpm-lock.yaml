@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@galacean/effects':
-    specifier: ^2.1.2
-    version: 2.1.2
+    specifier: ^2.2.2
+    version: 2.2.2
   bezier-easing:
     specifier: ^2.1.0
     version: 2.1.0
@@ -1727,8 +1727,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@galacean/effects-core@2.1.2:
-    resolution: {integrity: sha512-Y+vjK0xY8ESC22+lRxCqA2Y3l2WIKT06QsdZaVkhNiZROFgVTLP0Aq1EGPlzUPLmKdVF2ec3n1cAn0jC31SwAA==}
+  /@galacean/effects-core@2.2.2:
+    resolution: {integrity: sha512-Wbqd4Re/nn3eeErwIKy9zFFkPM14aHIZ3jJO52MFNdO27XpJXs4+vVWeW4mzCsFeP+4vwuqbDTGiuaOlh/7Gmg==}
     dependencies:
       '@galacean/effects-math': 1.1.0
       '@galacean/effects-specification': 2.1.0
@@ -1746,18 +1746,18 @@ packages:
     resolution: {integrity: sha512-gad/CBHvTlL182QExrPGqzafzfMjSEfVWRA4+mufHMvxlsDF0kEIvZ2EEcyG9IgvRkX81F1PU1vk+or6G1j2nw==}
     dev: false
 
-  /@galacean/effects-webgl@2.1.2:
-    resolution: {integrity: sha512-l2PXsspy921MHYtS6vU8HIy3KCeW/6fxz+6jUkeuD7+Ii0pAJ2o29lLW+ZC+4ZOt8iq5DeDu+BrKRuYm5XDxeQ==}
+  /@galacean/effects-webgl@2.2.2:
+    resolution: {integrity: sha512-J7XMai684stQWS9ykXhun18XyutJ9TfaHS87dbVeAVR/+Pl0nDvcgxWwG9XMLyob2UOwPSK85E0EH8UuC8keeA==}
     dependencies:
-      '@galacean/effects-core': 2.1.2
+      '@galacean/effects-core': 2.2.2
       string-hash: 1.1.3
     dev: false
 
-  /@galacean/effects@2.1.2:
-    resolution: {integrity: sha512-kP+OujFGeVVtxRVMFGDo9M3Oz7/aRT21b0o4JBlMnpSvakz7TRwjJMQSOL6ym0VpctYdk2COFgnTvWrGh/5Ipw==}
+  /@galacean/effects@2.2.2:
+    resolution: {integrity: sha512-pR1NbY3lty5zLEPbwhGsR2b1Xg/Qfzcx8JH2cLt244dnrWBGTSHXzfx3fySlyNXKkx355ZsQRaqKbxN+5yQBYQ==}
     dependencies:
-      '@galacean/effects-core': 2.1.2
-      '@galacean/effects-webgl': 2.1.2
+      '@galacean/effects-core': 2.2.2
+      '@galacean/effects-webgl': 2.2.2
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:

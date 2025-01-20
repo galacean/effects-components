@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>垂直滑动/VerticalSwiper - Galacean Effects Components Demo</title>
+  <style>
+    html, body, div, canvas { margin: 0; padding: 0; }
+    .container {
+      width: 375px;
+      height: 667px;
+      background-color: #000;
+    }
+    @media (max-width: 430px) {
+      html, body, .container {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+      color: #fff;
+    }
+    .fade-mask {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+    }
+    .fade-out {
+      /* font-color: #3198de; */
+      animation: fade-out 500ms ease-in forwards;
+    }
+    .fade-in {
+      animation: fade-in 500ms ease-in-out;
+    }
+    @keyframes fade-out {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.1;
+      }
+    }
+    @keyframes fade-in {
+      0% {
+        opacity: 0.1;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="J-container">
+    <div class="fade-mask" id="J-fadeMask"></div>
+    <div class="loading" id="J-loading">加载中...</div>
+  </div>
+  <script type="module" src="./index.ts"></script>
+</body>
+</html>
