@@ -1,16 +1,8 @@
 import type {
-  ItemBasicTransform,
-  ItemLinearVelOverLifetime,
-  spec,
-  ValueGetter,
-  VFXItem,
+  ItemBasicTransform, ItemLinearVelOverLifetime, spec, ValueGetter, VFXItem,
 } from '@galacean/effects';
 import {
-  calculateTranslation,
-  Component,
-  createValueGetter,
-  ensureVec3,
-  math,
+  calculateTranslation, Component, createValueGetter, ensureVec3, math,
 } from '@galacean/effects';
 
 const tempRot = new math.Euler();
@@ -29,7 +21,7 @@ export class AnimationComponent extends Component {
     this.playable.time += dt / 1000;
   }
 
-  play(clip: AnimationClipData) {
+  play (clip: AnimationClipData) {
     this.playable.data = clip;
     this.playable.time = 0;
     this.playable.start();
@@ -40,15 +32,15 @@ export interface AnimationClipData {
   /**
    * 元素大小变化属性
    */
-  sizeOverLifetime?: spec.SizeOverLifetime;
+  sizeOverLifetime?: spec.SizeOverLifetime,
   /**
    * 元素旋转变化属性
    */
-  rotationOverLifetime?: spec.RotationOverLifetime;
+  rotationOverLifetime?: spec.RotationOverLifetime,
   /**
    * 元素位置变化属性
    */
-  positionOverLifetime?: spec.PositionOverLifetime;
+  positionOverLifetime?: spec.PositionOverLifetime,
 }
 
 class TransformAnimationPlayable {
@@ -58,21 +50,21 @@ class TransformAnimationPlayable {
   protected sizeYOverLifetime?: ValueGetter<number>;
   protected sizeZOverLifetime?: ValueGetter<number>;
   protected rotationOverLifetime?: {
-    asRotation?: boolean;
-    separateAxes?: boolean;
-    enabled?: boolean;
-    x?: ValueGetter<number>;
-    y?: ValueGetter<number>;
-    z?: ValueGetter<number>;
+    asRotation?: boolean,
+    separateAxes?: boolean,
+    enabled?: boolean,
+    x?: ValueGetter<number>,
+    y?: ValueGetter<number>,
+    z?: ValueGetter<number>,
   };
   gravityModifier?: ValueGetter<number>;
   orbitalVelOverLifetime?: {
-    x?: ValueGetter<number>;
-    y?: ValueGetter<number>;
-    z?: ValueGetter<number>;
-    center: [x: number, y: number, z: number];
-    asRotation?: boolean;
-    enabled?: boolean;
+    x?: ValueGetter<number>,
+    y?: ValueGetter<number>,
+    z?: ValueGetter<number>,
+    center: [x: number, y: number, z: number],
+    asRotation?: boolean,
+    enabled?: boolean,
   };
   speedOverLifetime?: ValueGetter<number>;
   linearVelOverLifetime?: ItemLinearVelOverLifetime;
@@ -81,12 +73,14 @@ class TransformAnimationPlayable {
   direction?: math.Vector3;
   startSpeed?: number;
   data?: AnimationClipData;
-  private velocity?: math.Vector3;
   boundObject?: VFXItem;
   time = 0;
 
-  start(): void {
+  private velocity?: math.Vector3;
+
+  start (): void {
     const boundItem = this.boundObject;
+
     if (!boundItem) {
       return;
     }
@@ -97,9 +91,7 @@ class TransformAnimationPlayable {
       rotation: boundItem.transform.getRotation().clone(),
       scale: new math.Vector3(scale.x, scale.y, scale.x),
     };
-    const { positionOverLifetime } = this.data!;
-    const { rotationOverLifetime } = this.data!;
-    const { sizeOverLifetime } = this.data!;
+    const { positionOverLifetime, rotationOverLifetime, sizeOverLifetime } = this.data ?? {};
 
     if (
       positionOverLifetime &&
@@ -195,68 +187,83 @@ class TransformAnimationPlayable {
     this.velocity.multiply(this.startSpeed);
   }
 
-  processFrame(): void {
+  processFrame (): void {
     this.sampleAnimation();
   }
 
   /**
    * 应用时间轴K帧数据到对象
    */
-  private sampleAnimation() {
+  private sampleAnimation () {
     const boundItem = this.boundObject;
-    const { duration } = boundItem!;
+
+    if (!boundItem) {
+      return;
+    }
+
+    const { duration } = boundItem;
     const life = math.clamp(this.time / duration, 0, 1);
 
     if (this.sizeXOverLifetime) {
       tempSize.x = this.sizeXOverLifetime.getValue(life);
-      if (this.sizeSeparateAxes) {
-        tempSize.y = this.sizeYOverLifetime!.getValue(life);
-        tempSize.z = this.sizeZOverLifetime!.getValue(life);
+      if (this.sizeSeparateAxes && this.sizeYOverLifetime && this.sizeZOverLifetime) {
+        tempSize.y = this.sizeYOverLifetime.getValue(life);
+        tempSize.z = this.sizeZOverLifetime.getValue(life);
       } else {
         tempSize.z = tempSize.x;
         tempSize.y = tempSize.x;
       }
-      const startSize = this.originalTransform!.scale;
+      const { x = 1, y = 1, z = 1 } = this.originalTransform?.scale ?? {};
 
-      boundItem!.transform.setScale(
-        tempSize.x * startSize.x,
-        tempSize.y * startSize.y,
-        tempSize.z * startSize.z,
+      boundItem.transform.setScale(
+        tempSize.x * x,
+        tempSize.y * y,
+        tempSize.z * z,
       );
     }
 
     if (this.rotationOverLifetime) {
-      const func = (v: ValueGetter<number>) =>
-        this.rotationOverLifetime!.asRotation
+      const func = (v?: ValueGetter<number>) => {
+        if (!v) { return 0; }
+
+        return this.rotationOverLifetime?.asRotation
           ? v.getValue(life)
           : v.getIntegrateValue(0, life, duration);
-      const incZ = func(this.rotationOverLifetime.z!);
+      };
+      const incZ = func(this.rotationOverLifetime.z);
       const { separateAxes } = this.rotationOverLifetime;
 
-      tempRot.x = separateAxes ? func(this.rotationOverLifetime.x!) : 0;
-      tempRot.y = separateAxes ? func(this.rotationOverLifetime.y!) : 0;
+      tempRot.x = separateAxes ? func(this.rotationOverLifetime.x) : 0;
+      tempRot.y = separateAxes ? func(this.rotationOverLifetime.y) : 0;
       tempRot.z = incZ;
-      const rot = tempRot.addEulers(this.originalTransform!.rotation, tempRot);
 
-      boundItem!.transform.setRotation(rot.x, rot.y, rot.z);
+      if (this.originalTransform) {
+        const rot = tempRot.addEulers(this.originalTransform.rotation, tempRot);
+
+        boundItem.transform.setRotation(rot.x, rot.y, rot.z);
+      }
     }
 
     if (this.positionOverLifetime) {
       const pos = tempPos;
 
-      calculateTranslation(
-        pos,
-        this,
-        this.gravity!,
-        this.time,
-        duration,
-        this.originalTransform!.position,
-        this.velocity!,
-      );
+      if (this.gravity && this.originalTransform && this.velocity) {
+        calculateTranslation(
+          pos,
+          this,
+          this.gravity,
+          this.time,
+          duration,
+          this.originalTransform.position,
+          this.velocity,
+        );
+      }
+
       if (this.originalTransform?.path) {
         pos.add(this.originalTransform.path.getValue(life));
       }
-      boundItem!.transform.setPosition(pos.x, pos.y, pos.z);
+
+      boundItem.transform.setPosition(pos.x, pos.y, pos.z);
     }
   }
 }

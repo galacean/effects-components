@@ -11,7 +11,6 @@ const player = new Player({
   container,
   notifyTouch: true,
   interactive: true,
-  pixelRatio: window.devicePixelRatio,
 });
 // 加载需要轮播的合成
 const compList = await player.loadScene([
