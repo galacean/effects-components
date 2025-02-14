@@ -4,7 +4,7 @@ import type { SwiperControllerOptions } from './types';
 import { formatNum } from './utils';
 
 /**
- *
+ * 卡片轮播控制器
  */
 export class SwiperController {
   /**
@@ -78,14 +78,18 @@ export class SwiperController {
   /**
    * 执行合成轮播
    * @param compositions
-   * @param initCardIndex
+   * @param cardIndex
    */
-  run (compositions: Composition[], initCardIndex: number) {
+  run (compositions: Composition[], cardIndex: number) {
+    if (this.cardCount === 0) {
+      this.cardCount = compositions.length;
+    }
+
     for (let i = 0; i < compositions.length; i++) {
       this.cardItems[i] = compositions[i];
     }
 
-    const index = math.clamp(initCardIndex, 0, this.cardCount - 1);
+    const index = math.clamp(cardIndex, 0, this.cardCount - 1);
 
     this.updateTransform(index / (this.cardCount - 1));
   }
