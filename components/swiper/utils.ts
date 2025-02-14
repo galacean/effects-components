@@ -16,11 +16,13 @@ export function toDegree (rotate: number) {
   return (rotate / Math.PI) * 180;
 }
 
-export function getValOnCubicBezier (options: {
-  x?: number,
-  y?: number,
-  cubicBezier: Record<string, number[]>,
-}) {
+export function getValOnCubicBezier (
+  options: {
+    x?: number,
+    y?: number,
+    cubicBezier: Record<string, number[]>,
+  },
+) {
   if ('x' in options && 'y' in options) {
     throw new Error('cannot provide known x and known y');
   }
@@ -84,8 +86,4 @@ export function getValOnCubicBezier (options: {
 
 export function formatNum (x: number, n = 3) {
   return Math.round(x * Math.pow(10, n)) / Math.pow(10, n);
-}
-
-export function clamp (v: number, min: number, max: number): number {
-  return v > max ? max : (v < min ? min : v);
 }

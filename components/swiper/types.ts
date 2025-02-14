@@ -1,7 +1,6 @@
 import type { Composition } from '@galacean/effects';
 
 export type SwiperOptions = {
-  onGotoCard: (currentCardIndex: number) => unknown,
   /**
    * 半径
    */
@@ -27,18 +26,28 @@ export type SwiperOptions = {
    */
   widthRatio?: number,
   /**
+   * 转动到 cardIndex 对应卡片时的回调
+   * @param cardIndex
+   */
+  onGotoCard?: (cardIndex: number) => void,
+  /**
    * 当前角度在总角度中的占比，0 表示在最左侧，1 表示在最右侧
-   * @param {number} progress
+   * @param progress
+   * @param currentCardIndex
    */
   onProgress?: (progress: number, currentCardIndex: number) => void,
   /**
    * 转动到 cardIndex 对应卡片时的回调
-   * @param {number} cardIndex
+   * @param cardIndex
+   * @param rotate
    */
   onDragMove?: (cardIndex: number, rotate: number) => void,
 };
 
-export type SwiperControllerProps = {
+/**
+ *
+ */
+export type SwiperControllerOptions = {
   /**
    * 超出屏幕的合成是否自动隐藏
    */
@@ -53,7 +62,7 @@ export type SwiperControllerProps = {
   cardCount?: number,
   /**
    * 每次位移后的回调
-   * @param {Composition[]} compList
+   * @param compositions
    */
-  onTransform?: (compList: Composition[]) => void,
+  onTransform?: (compositions: Composition[]) => void,
 };

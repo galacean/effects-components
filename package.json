@@ -29,8 +29,7 @@
     "iOS 9"
   ],
   "dependencies": {
-    "@galacean/effects": "^2.2.4",
-    "@galacean/effects-plugin-spine": "^2.2.4",
+    "@galacean/effects": "^2.2.5",
     "bezier-easing": "^2.1.0"
   },
   "devDependencies": {
@@ -42,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
     "@vitejs/plugin-legacy": "^4.1.1",
+    "@galacean/effects-plugin-spine": "^2.2.5",
     "concurrently": "^8.2.2",
     "eslint": "^8.56.0",
     "eslint-plugin-compat": "^4.2.0",
