@@ -4,7 +4,7 @@
  * @returns
  */
 export function toRotate (degree: number) {
-  return degree / 180 * Math.PI;
+  return (degree / 180) * Math.PI;
 }
 
 /**
@@ -13,12 +13,14 @@ export function toRotate (degree: number) {
  * @returns
  */
 export function toDegree (rotate: number) {
-  return rotate / Math.PI * 180;
+  return (rotate / Math.PI) * 180;
 }
 
-export function getValOnCubicBezier (
-  options: { x?: number, y?: number, cubicBezier: Record<string, number[]> }
-) {
+export function getValOnCubicBezier (options: {
+  x?: number,
+  y?: number,
+  cubicBezier: Record<string, number[]>,
+}) {
   if ('x' in options && 'y' in options) {
     throw new Error('cannot provide known x and known y');
   }
@@ -45,18 +47,28 @@ export function getValOnCubicBezier (
   for (let i = 0; i < 100; i++) {
     const t = i / 100;
 
-    LUT.x.push((1 - t) * (1 - t) * (1 - t) * x1 + 3 * (1 - t) * (1 - t) * t * x2 + 3 * (1 - t) * t * t * x3 + t * t * t * x4);
-    LUT.y.push((1 - t) * (1 - t) * (1 - t) * y1 + 3 * (1 - t) * (1 - t) * t * y2 + 3 * (1 - t) * t * t * y3 + t * t * t * y4);
+    LUT.x.push(
+      (1 - t) * (1 - t) * (1 - t) * x1 +
+      3 * (1 - t) * (1 - t) * t * x2 +
+      3 * (1 - t) * t * t * x3 +
+      t * t * t * x4,
+    );
+    LUT.y.push(
+      (1 - t) * (1 - t) * (1 - t) * y1 +
+      3 * (1 - t) * (1 - t) * t * y2 +
+      3 * (1 - t) * t * t * y3 +
+      t * t * t * y4,
+    );
   }
   let knw: 'x' | 'y';
   let unk: 'x' | 'y';
 
   if ('x' in options) {
-    knw = 'x'; //known
-    unk = 'y'; //unknown
+    knw = 'x';
+    unk = 'y';
   } else {
-    knw = 'y'; //known
-    unk = 'x'; //unknown
+    knw = 'y';
+    unk = 'x';
   }
 
   for (let i = 1; i < 100; i++) {
@@ -68,4 +80,12 @@ export function getValOnCubicBezier (
       return LUT[unk][i] + linearInterpolationValue;
     }
   }
+}
+
+export function formatNum (x: number, n = 3) {
+  return Math.round(x * Math.pow(10, n)) / Math.pow(10, n);
+}
+
+export function clamp (v: number, min: number, max: number): number {
+  return v > max ? max : (v < min ? min : v);
 }

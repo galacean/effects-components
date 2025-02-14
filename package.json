@@ -29,7 +29,8 @@
     "iOS 9"
   ],
   "dependencies": {
-    "@galacean/effects": "^2.1.1",
+    "@galacean/effects": "^2.2.4",
+    "@galacean/effects-plugin-spine": "^2.2.4",
     "bezier-easing": "^2.1.0"
   },
   "devDependencies": {
