@@ -20,7 +20,7 @@ const compositions = await player.loadScene([
   '4.json',
   '5.json',
 ]);
-// 设定合成摆放间距
+// 初始化控制器，并设定合成摆放间距
 const controller = new SwiperController({
    /**
     * 合成间的距离
@@ -34,16 +34,17 @@ const controller = new SwiperController({
 const initCardIndex = 3;
 
 // 在指定 DOM 容器上绑定滚动事件并通知 swiperController
-// 也可以使用社区组件和对应属性 https://swiperjs.com/swiper-api#prop-swiper-progress
+// Swiper 也可以使用社区组件和对应属性：https://swiperjs.com/swiper-api#prop-swiper-progress
 const swiper = new Swiper(container, {
   initCardIndex,
+  cardCount: compositions.length,
   onProgress: (progress, currentCardIndex) => {
     controller.updateTransform(progress);
   },
 });
 
 // 开始监听滚动
-swiper.run(controller, compositions);
+controller.run(compositions, initCardIndex);
 ```
 
 

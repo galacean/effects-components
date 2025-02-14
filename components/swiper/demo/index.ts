@@ -24,7 +24,7 @@ const container = document.getElementById('J-container')!;
     const cardCount = compositions.length;
     const initCardIndex = 3;
 
-    // 设定合成摆放间距
+    // 初始化控制器，并设定合成摆放间距
     const controller = new SwiperController({
       distance: 10,
       autoHide: true,
@@ -40,7 +40,11 @@ const container = document.getElementById('J-container')!;
       },
     });
 
-    swiper.run(controller, compositions);
+    controller.run(compositions, initCardIndex);
+
+    setTimeout(() => {
+      swiper.gotoCardIndex(0);
+    }, 3000);
   } catch (e) {
     console.error('biz', e);
   }

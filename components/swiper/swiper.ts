@@ -1,9 +1,8 @@
 import BezierEasing from 'bezier-easing';
-import type { Composition, Disposable } from '@galacean/effects';
+import type { Disposable } from '@galacean/effects';
 import { math } from '@galacean/effects';
 import type { SwiperOptions } from './types';
 import { toRotate, toDegree, getValOnCubicBezier, formatNum } from './utils';
-import type { SwiperController } from './swiper-controller';
 
 const cubicBezier = {
   xs: [0, 0.25, 0.25, 1],
@@ -93,20 +92,8 @@ export class Swiper implements Disposable {
     this.cardCount = cardCount;
     this.totalDegree = (cardCount - 1) * this.degree;
     this.currentCardIndex = math.clamp(initCardIndex, 0, this.cardCount - 1);
-  }
 
-  /**
-   *
-   * @param swiperController
-   * @param compositions
-   */
-  run (
-    controller: SwiperController,
-    compositions: Composition[],
-  ) {
     this.bindDragEvent();
-    controller.setCardCount(this.cardCount);
-    controller.run(compositions, this.currentCardIndex);
   }
 
   isPlaying () {
