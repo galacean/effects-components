@@ -144,6 +144,10 @@ export class VerticalSwiper extends EventEmitter<VerticalSwiperEvent> implements
     }));
   }
 
+  /**
+   *
+   * @param index
+   */
   async run (index = 0) {
     const player = this.player;
     const { scenes } = this.options;
