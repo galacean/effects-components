@@ -13,7 +13,8 @@ $ npm i @galacean/effects-components --save
 
 ## 使用说明
 
-- [Swiper](https://code.alipay.com/vvfx/mars-components/blob/master/components/swiper/index.md)
+- [Swiper](https://github.com/galacean/effects-components/blob/main/components/swiper/index.md)
+- [Vertical Swiper](https://github.com/galacean/effects-components/blob/main/components/vertical-swiper/index.md)
 
 ## 开发
 
