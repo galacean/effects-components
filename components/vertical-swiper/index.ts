@@ -171,7 +171,7 @@ export class VerticalSwiper extends EventEmitter<VerticalSwiperEvent> implements
       this.emit('last-scene', { index });
     }
 
-    const composition = await player.loadScene(json, { variables, reusable: true });
+    const composition = await player.loadScene(json, { variables });
 
     this.emit('after-scene-change', { index, name, composition });
 

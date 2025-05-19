@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@galacean/effects':
-    specifier: ^2.2.5
-    version: 2.2.5
+    specifier: ^2.4.2
+    version: 2.4.2
   bezier-easing:
     specifier: ^2.1.0
     version: 2.1.0
@@ -20,8 +20,8 @@ devDependencies:
     specifier: ^19.2.2
     version: 19.2.2
   '@galacean/effects-plugin-spine':
-    specifier: ^2.2.5
-    version: 2.2.5
+    specifier: ^2.4.2
+    version: 2.4.2
   '@rollup/plugin-commonjs':
     specifier: ^21.1.0
     version: 21.1.0(rollup@2.79.1)
@@ -1734,11 +1734,11 @@ packages:
     resolution: {integrity: sha512-BLKqJRaUtqG8O4stkrthgjI4QFHKPEK8SuNPjUBOIw1OrQHXVEmS7tbsinynTtauS2Ow0IpHwTU/E/+fKdj61A==}
     dev: true
 
-  /@galacean/effects-core@2.2.5:
-    resolution: {integrity: sha512-vqXKChg7e+xliy/hV/SUMgOx6zMuOMfsbpDwHYk3UkzDXRFnSChLLUVql/QePhCgA6nrfTQcxqqDm+XalljC5Q==}
+  /@galacean/effects-core@2.4.2:
+    resolution: {integrity: sha512-xt/F9IlKQVSArS0kUArOPbWW74MVTbc0DnBnMYF5Z2EPwVUI5t+f/1Eu2j6KBhzQ2u0FqM1A/oITq+6FHHAPSA==}
     dependencies:
       '@galacean/effects-math': 1.1.0
-      '@galacean/effects-specification': 2.1.0
+      '@galacean/effects-specification': 2.3.1
       flatbuffers: 24.3.25
       libtess: 1.2.2
       uuid: 9.0.1
@@ -1749,28 +1749,27 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: false
 
-  /@galacean/effects-plugin-spine@2.2.5:
-    resolution: {integrity: sha512-xceFDX+fhyU/B47BNjmInIflQBFtgVMNcN9IPzvf+1hGgr7LO19dBbHb6gODmS6NOTl5PiZ912DKaSc4pbb8aA==}
+  /@galacean/effects-plugin-spine@2.4.2:
+    resolution: {integrity: sha512-1buwjwCrl3DvBgIsI9Z1wQ8mDKQ8tjS9azlIjuU/uTi2Bq0qpVFwtAZimmkL5+uWdx/IoXJhebGdL+xSuk3X9g==}
     dependencies:
       '@esotericsoftware/spine-core': 4.2.73
     dev: true
 
-  /@galacean/effects-specification@2.1.0:
-    resolution: {integrity: sha512-gad/CBHvTlL182QExrPGqzafzfMjSEfVWRA4+mufHMvxlsDF0kEIvZ2EEcyG9IgvRkX81F1PU1vk+or6G1j2nw==}
+  /@galacean/effects-specification@2.3.1:
+    resolution: {integrity: sha512-aSmZG86qx1l0MI25dAM/JaJ2vYxuHr0l5WCh+O9mbJHSRwTzYi3y2Bv+pOY+2RKeGpK1LZ3MaOMaFC0IZSl7OA==}
     dev: false
 
-  /@galacean/effects-webgl@2.2.5:
-    resolution: {integrity: sha512-/+v5KgFw0uuRokQ63P2TtdOOqK9/m733LaWS4AMPTsPqkBMeITEJBanl/mHyscs+DyrCoY7Q32jCb3IyLtSO5Q==}
+  /@galacean/effects-webgl@2.4.2:
+    resolution: {integrity: sha512-ubH4sn52aLJUY8Y2q0/ci8fQMCQ6KoNT+8qvKA9z+K2a/+etZiKS1J+7x7jbpyd7hh4tBMSTb+lQmEDvELITwA==}
     dependencies:
-      '@galacean/effects-core': 2.2.5
-      string-hash: 1.1.3
+      '@galacean/effects-core': 2.4.2
     dev: false
 
-  /@galacean/effects@2.2.5:
-    resolution: {integrity: sha512-h44h41ir453kJWfhH7OgEKA/xN5dB1o5xOJxr+bNOmMwWefMVxRk7De2F7exsZAlXP2RdISgVgIKUoDL6m5feg==}
+  /@galacean/effects@2.4.2:
+    resolution: {integrity: sha512-DqsIB0ywYgZgKqhGXCR8Xy8kMFioQCII2oYGL9rPxajSpJ3PDXhMcqTnoig0R5mvNaq4YmXgZejnap4k0UPBRw==}
     dependencies:
-      '@galacean/effects-core': 2.2.5
-      '@galacean/effects-webgl': 2.2.5
+      '@galacean/effects-core': 2.4.2
+      '@galacean/effects-webgl': 2.4.2
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
@@ -4104,10 +4103,6 @@ packages:
     resolution: {integrity: sha512-a1uQGz7IyVy9YwhqjZIZu1c8JO8dNIe20xBmSS6qu9kv++k3JGzCVmprbNN5Kn+BgzD5E7YYwg1CcjuJMRNsvg==}
     engines: {node: '>=0.6.19'}
     dev: true
-
-  /string-hash@1.1.3:
-    resolution: {integrity: sha512-kJUvRUFK49aub+a7T1nNE66EJbZBMnBgoC1UbCZ5n6bsZKBRga4KgBRTMn/pFkeCZSYtNeSyMxPDM0AXWELk2A==}
-    dev: false
 
   /string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}

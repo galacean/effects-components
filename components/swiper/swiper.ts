@@ -123,6 +123,14 @@ export class Swiper implements Disposable {
     }
   }
 
+  /**
+   * 获取当前卡片的 index
+   * @returns
+   */
+  getCurrentIndex () {
+    return this.currentCardIndex;
+  }
+
   private gotoDegree (degree: number) {
     if (this.playingDrag) {
       return;

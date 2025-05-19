@@ -1,6 +1,6 @@
 {
   "name": "@galacean/effects-components",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Galacean Effects components",
   "module": "./es/index/index.mjs",
   "main": "./dist/index.js",
@@ -29,7 +29,7 @@
     "iOS 9"
   ],
   "dependencies": {
-    "@galacean/effects": "^2.2.5",
+    "@galacean/effects": "^2.4.2",
     "bezier-easing": "^2.1.0"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
     "@vitejs/plugin-legacy": "^4.1.1",
-    "@galacean/effects-plugin-spine": "^2.2.5",
+    "@galacean/effects-plugin-spine": "^2.4.2",
     "concurrently": "^8.2.2",
     "eslint": "^8.56.0",
     "eslint-plugin-compat": "^4.2.0",
