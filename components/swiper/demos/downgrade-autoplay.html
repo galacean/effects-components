@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播/Swiper - Galacean Effects Components Demo</title>
+  <style>
+    html, body, div, canvas { margin: 0; padding: 0; }
+    .container {
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 255);
+      display: none;
+    }
+    #J-downgrade-swiper {
+      width: 100vw;
+      height: 100vh;
+    }
+    .downgrade-slide {
+      position: absolute;
+    }
+    .slide-content {
+      width: 450px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="J-container"></div>
+  <div id="J-downgrade-swiper">
+    <div class="downgrade-slide">
+      <img class="slide-content" src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*jkg8RKGxIpgAAAAAfOAAAAgAesF2AQ/original" alt="" draggable="false">
+    </div>
+    <div class="downgrade-slide">
+      <img class="slide-content" src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*KJxmTpwysMAAAAAAgBAAAAgAesF2AQ/original" alt="" draggable="false">
+    </div>
+    <div class="downgrade-slide">
+      <img class="slide-content" src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*LxOjQJMvGogAAAAAfWAAAAgAesF2AQ/original" alt="" draggable="false">
+    </div>
+    <div class="downgrade-slide">
+      <img class="slide-content" src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*_iOES4wPoEkAAAAAgBAAAAgAesF2AQ/original" alt="" draggable="false">
+    </div>
+    <div class="downgrade-slide">
+      <img class="slide-content" src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*n3oXTJxIPvUAAAAAgBAAAAgAesF2AQ/original" alt="" draggable="false">
+    </div>
+  </div>
+  <script type="module" src="./downgrade-autoplay.ts"></script>
+</body>
+</html>

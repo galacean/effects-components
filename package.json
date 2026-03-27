@@ -29,19 +29,21 @@
     "iOS 9"
   ],
   "dependencies": {
-    "@galacean/effects": "^2.4.2",
+    "@rollup/plugin-json": "^6.1.0",
     "bezier-easing": "^2.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@galacean/effects": "^2.8.9",
+    "@galacean/effects-plugin-multimedia": "^2.8.9",
+    "@galacean/effects-plugin-spine": "^2.8.9",
     "@rollup/plugin-commonjs": "^21.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-terser": "^0.4.3",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
     "@vitejs/plugin-legacy": "^4.1.1",
-    "@galacean/effects-plugin-spine": "^2.4.2",
     "concurrently": "^8.2.2",
     "eslint": "^8.56.0",
     "eslint-plugin-compat": "^4.2.0",

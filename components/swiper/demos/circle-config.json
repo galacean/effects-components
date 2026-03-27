@@ -1,0 +1,101 @@
+{
+  "version": "0.0.1",
+  "effectTemplate": "circle",
+  "slideDistance": 7,
+  "radius": 25,
+  "perspective": -1,
+  "swipeTime": 1.5,
+  "swipeEasing": [
+    0.23,
+    0.18,
+    0.01,
+    1
+  ],
+  "swipeEasingCurve": [
+    21,
+    [
+      [
+        3,
+        [
+          0,
+          0,
+          0.23,
+          0.18
+        ]
+      ],
+      [
+        2,
+        [
+          0.01,
+          1,
+          1,
+          1
+        ]
+      ]
+    ]
+  ],
+  "slides": [
+    {
+      "controlItemId": "2a7e7f74d0e242dbaa7cf7b8c30e5280"
+    },
+    {
+      "controlItemId": "1f10358aefa44beab545be143e1e43de"
+    },
+    {
+      "controlItemId": "187bfa8ea65f40119ee652bcd9be4acf"
+    },
+    {
+      "controlItemId": "0038c5f60207408ca25fcc083e2e39a1"
+    },
+    {
+      "controlItemId": "246ce4e7f73549c29e81ebceb9c7af89"
+    }
+  ],
+  "initCardIndex": 0,
+  "loop": true,
+  "autoPlay": false,
+  "autoPlaySpeed": 1,
+  "autoPlayInterval": 3,
+  "slideInAnimation": "",
+  "centerAnimation": "",
+  "idleAnimation": "",
+  "enterAnimation": "2be7eabb972242f98919f7b0a2f53163",
+  "playBackRatio": 0.3,
+  "slideNumberVarying": false,
+  "slideNames": [],
+  "enableFastDrag": true,
+  "fastDragThreshold": 2,
+  "fastDragAmplitude": 1,
+  "fastDragEasing": [
+    0.312,
+    0,
+    0.238,
+    1
+  ],
+  "fastDragEasingCurve": [
+    21,
+    [
+      [
+        3,
+        [
+          0,
+          0,
+          0.312,
+          0
+        ]
+      ],
+      [
+        2,
+        [
+          0.238,
+          1,
+          1,
+          1
+        ]
+      ]
+    ]
+  ],
+  "fastDragTimeRatio": 1.2,
+  "autoRenderOrder": false,
+  "centerControlItemId": "9c8ba1958e784e07b7c1f3ed5f3b089e"
+}

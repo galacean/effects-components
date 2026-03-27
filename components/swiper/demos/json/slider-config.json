@@ -1,0 +1,335 @@
+{
+  "sliders": [
+    {
+      "compositionId": "8789d2cb0f79420ba0ce0dccca99ed69",
+      "data": {
+        "version": "0.0.1",
+        "effectTemplate": "horizontal",
+        "slideDistance": 9,
+        "radius": 15,
+        "perspective": -1,
+        "swipeTime": 0.3,
+        "swipeEasing": [
+          0.23,
+          0.18,
+          0.14,
+          1
+        ],
+        "swipeEasingCurve": [
+          21,
+          [
+            [
+              3,
+              [
+                0,
+                0,
+                0.23,
+                0.18
+              ]
+            ],
+            [
+              2,
+              [
+                0.14,
+                1,
+                1,
+                1
+              ]
+            ]
+          ]
+        ],
+        "slides": [],
+        "initCardIndex": 1,
+        "loop": true,
+        "autoPlay": false,
+        "autoPlaySpeed": 0.2,
+        "autoPlayInterval": 0,
+        "slideInAnimation": "a07691f89fd940e7aec7caf6d55c42e9",
+        "centerAnimation": "d93b20f7e36a449385ab143ca43298df",
+        "idleAnimation": "136a36a34be94453bb4f21146c415548",
+        "enterAnimation": "",
+        "playBackRatio": 0.1,
+        "slideNumberVarying": true,
+        "slideNames": [],
+        "enableFastDrag": false,
+        "fastDragThreshold": 1,
+        "fastDragAmplitude": 1,
+        "fastDragEasing": [
+          0.115,
+          0,
+          0.002,
+          1
+        ],
+        "fastDragEasingCurve": [
+          21,
+          [
+            [
+              3,
+              [
+                0,
+                0,
+                0.115,
+                0
+              ]
+            ],
+            [
+              2,
+              [
+                0.002,
+                1,
+                1,
+                1
+              ]
+            ]
+          ]
+        ],
+        "fastDragTimeRatio": 1,
+        "autoRenderOrder": false
+      }
+    }
+  ],
+  "animations": [
+    {
+      "positionCurves": [],
+      "scaleCurves": [
+        {
+          "path": "card",
+          "keyFrames": [
+            27,
+            [
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      -6.522560269672795e-16,
+                      0.85
+                    ]
+                  ],
+                  [
+                    4,
+                    [
+                      4.985,
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      -6.522560269672795e-16,
+                      0.85
+                    ]
+                  ],
+                  [
+                    4,
+                    [
+                      4.985,
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      0,
+                      1
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        }
+      ],
+      "floatCurves": [
+        {
+          "path": "card",
+          "className": "VFXItem",
+          "property": "isActive",
+          "keyFrames": [
+            21,
+            [
+              [
+                5,
+                [
+                  0,
+                  1
+                ],
+                4
+              ]
+            ]
+          ]
+        }
+      ],
+      "eulerCurves": [],
+      "rotationCurves": [],
+      "colorCurves": [],
+      "id": "a07691f89fd940e7aec7caf6d55c42e9",
+      "dataType": "AnimationClip",
+      "name": "滑入动画.anic",
+      "duration": 5
+    },
+    {
+      "positionCurves": [],
+      "scaleCurves": [
+        {
+          "path": "card",
+          "keyFrames": [
+            27,
+            [
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      0,
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      0,
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      0,
+                      1
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        }
+      ],
+      "floatCurves": [
+        {
+          "path": "card",
+          "className": "VFXItem",
+          "property": "isActive",
+          "keyFrames": [
+            21,
+            [
+              [
+                5,
+                [
+                  0,
+                  1
+                ],
+                4
+              ]
+            ]
+          ]
+        }
+      ],
+      "eulerCurves": [],
+      "rotationCurves": [],
+      "colorCurves": [],
+      "id": "d93b20f7e36a449385ab143ca43298df",
+      "dataType": "AnimationClip",
+      "name": "居中动画.anic",
+      "duration": 2
+    },
+    {
+      "positionCurves": [],
+      "scaleCurves": [
+        {
+          "path": "card",
+          "keyFrames": [
+            27,
+            [
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      0,
+                      0.85
+                    ]
+                  ]
+                ]
+              ],
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      0,
+                      0.85
+                    ]
+                  ]
+                ]
+              ],
+              [
+                21,
+                [
+                  [
+                    4,
+                    [
+                      0,
+                      1
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        }
+      ],
+      "floatCurves": [
+        {
+          "path": "card",
+          "className": "VFXItem",
+          "property": "isActive",
+          "keyFrames": [
+            21,
+            [
+              [
+                5,
+                [
+                  0,
+                  1
+                ],
+                4
+              ]
+            ]
+          ]
+        }
+      ],
+      "eulerCurves": [],
+      "rotationCurves": [],
+      "colorCurves": [],
+      "id": "136a36a34be94453bb4f21146c415548",
+      "dataType": "AnimationClip",
+      "name": "待机动画.anic",
+      "duration": 5
+    }
+  ]
+}

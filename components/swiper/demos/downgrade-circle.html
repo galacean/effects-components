@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播/Swiper - Galacean Effects Components Demo</title>
+  <style>
+    html, body, div, canvas { margin: 0; padding: 0; }
+    .container {
+      /*width: 375px;*/
+      /*height: 812px;*/
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 255);
+      display: none;
+    }
+    img {
+      display: block;
+      width: 300px;
+      margin: 0 auto;
+      user-select: none;
+    }
+    #J-downgrade-swiper {
+      display: flex;
+      justify-content: center;
+      width: 700px;
+      height: 500px;
+      transform-style: preserve-3d;
+      margin: auto;
+      perspective-origin: right top;
+      perspective: 2000px;
+    }
+    .downgrade-center-item {
+      position: relative;
+      width: 420px;
+      height: 61px;
+      transform-style: preserve-3d;
+    }
+    .downgrade-slide {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      /*backface-visibility: hidden;*/
+    }
+
+    .downgrade-slide:nth-child(1) {
+      transform: rotateY(0deg) translateZ(500px);
+    }
+
+    .downgrade-slide:nth-child(2) {
+      transform: rotateY(72deg) translateZ(500px);
+    }
+
+    .downgrade-slide:nth-child(3) {
+      transform: rotateY(144deg) translateZ(500px);
+    }
+
+    .downgrade-slide:nth-child(4) {
+      transform: rotateY(216deg) translateZ(500px);
+    }
+
+    .downgrade-slide:nth-child(5) {
+      transform: rotateY(288deg) translateZ(500px);
+    }
+
+
+    /*@media (max-width: 719px) {*/
+    /*  html, body, .container {*/
+    /*    overflow: hidden;*/
+    /*    width: 100%;*/
+    /*    height: 100%;*/
+    /*  }*/
+    /*}*/
+  </style>
+</head>
+<body>
+  <div class="container" id="J-container"></div>
+  <div id="J-downgrade-swiper">
+    <div class="downgrade-center-item">
+      <div class="downgrade-slide">
+        <img src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*LxOjQJMvGogAAAAAfWAAAAgAesF2AQ/original" alt="" draggable="false">
+      </div>
+      <div class="downgrade-slide">
+        <img src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*_iOES4wPoEkAAAAAgBAAAAgAesF2AQ/original" alt="" draggable="false">
+      </div>
+      <div class="downgrade-slide">
+        <img src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*jkg8RKGxIpgAAAAAfOAAAAgAesF2AQ/original" alt="" draggable="false">
+      </div>
+      <div class="downgrade-slide">
+        <img src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*3NKGRoC1a40AAAAAgBAAAAgAesF2AQ/original" alt="" draggable="false">
+      </div>
+      <div class="downgrade-slide">
+        <img src="https://mdn.alipayobjects.com/graph_jupiter/afts/img/A*KJxmTpwysMAAAAAAgBAAAAgAesF2AQ/original" alt="" draggable="false">
+      </div>
+    </div>
+  </div>
+  <script type="module" src="./downgrade-circle.ts"></script>
+</body>
+</html>

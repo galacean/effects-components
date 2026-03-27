@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播/Swiper - Galacean Effects Components Demo</title>
+  <style>
+    html, body, div, canvas { margin: 0; padding: 0; }
+    body {
+      background: #000;
+    }
+    .app {
+      position: relative;
+      width: 100vw;
+    }
+    .container {
+      /*width: 375px;*/
+      /*height: 812px;*/
+      width: 100%;
+      height: 425px;
+      background-color: rgba(0, 0, 0, 255);
+    }
+    .button-group {
+      /*box-sizing: border-box;*/
+      /*position: absolute;*/
+      /*bottom: 50px;*/
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    button {
+      width: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="container" id="J-container"></div>
+    <div class="button-group swiper-nav">
+      <button data-index="1">卡1</button>
+      <button data-index="2">卡2</button>
+      <button data-index="3">卡3</button>
+      <button data-index="4">卡4</button>
+      <button data-index="5">卡5</button>
+    </div>
+  </div>
+
+  <script type="module" src="./circle.ts"></script>
+</body>
+</html>

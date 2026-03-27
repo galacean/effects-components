@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播/Swiper - Galacean Effects Components Demo</title>
+  <style>
+    html, body, div, canvas { margin: 0; padding: 0; }
+    .app {
+      width: 800px;
+      max-width: 100vw;
+      height: 100vh;
+      margin: 0 auto;
+      position: relative;
+      background: #000;
+    }
+    .container {
+      width: 100%;
+      height: 100%;
+    }
+    .button-group {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      position: absolute;
+      bottom: 100px;
+    }
+    body {
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="container" id="J-container"></div>
+    <div class="button-group">
+      <button id="J-begin">开始抽奖</button>
+      <button id="J-lottery-1">抽中奖品1</button>
+      <button id="J-lottery-2">抽中奖品2</button>
+      <button id="J-lottery-3">抽中奖品3</button>
+      <button id="J-lottery-4">抽中奖品4</button>
+      <button id="J-lottery-5">抽中奖品5</button>
+    </div>
+  </div>
+  <script type="module" src="./lottery.ts"></script>
+</body>
+</html>
