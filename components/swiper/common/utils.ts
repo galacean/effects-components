@@ -1,5 +1,6 @@
 import type { Camera as PlayerCamera, VFXItem as PlayerVFXItem } from '@galacean/effects';
 import { calcBezier } from '../animate/bezier-easing';
+import { math } from '@galacean/effects';
 
 export function getValOnCubicBezier (
   options: {
@@ -110,13 +111,8 @@ export function sleep (ms: number) {
   });
 }
 
-export function clamp (value: number, min?: number, max?: number): number {
-  const fixedMin = min === undefined || isNaN(min) ? -Infinity : min;
-  const fixedMax = max === undefined || isNaN(max) ? Infinity : max;
-  const lower = Math.min(fixedMin, fixedMax);
-  const upper = Math.max(fixedMin, fixedMax);
-
-  return Math.min(Math.max(value, lower), upper);
+export function clamp (value: number, min: number, max: number): number {
+  return math.clamp(value, min, max);
 }
 
 export function findItemById (rootItem: PlayerVFXItem, id: string): PlayerVFXItem | undefined {
