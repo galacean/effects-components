@@ -21,7 +21,7 @@ const slideJSON = [
       interactive: true,
     });
 
-    const initCardIndex = 1; // 从0开始
+    const initSlideIndex = 1; // 从0开始
     // 加载合成，可以先只加载主场景和初始幻灯片
     const compositions = await player.loadScene([mainJSON, ...slideJSON]);
 
@@ -31,11 +31,11 @@ const slideJSON = [
       slideCompositions: compositions.slice(1).map((comp, index) => ({ composition: comp, index, url: slideJSON[index] })),
       player: player,
       options: {
-        initCardIndex,
+        initSlideIndex,
       },
       handlers: {
-        onWillGotoCard (index) {
-          console.info('onWillGotoCard', index);
+        onWillGotoSlide (index) {
+          console.info('onWillGotoSlide', index);
         },
       },
     });

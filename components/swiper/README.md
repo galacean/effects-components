@@ -32,8 +32,8 @@ const handlers: SwiperHandlers = {
     console.log('onSlidePark', slideIndex);
   },
   // 手松开时将要跳转到指定幻灯片时触发
-  onWillGotoCard: (slideIndex) => {
-    console.log('onWillGotoCard', slideIndex);
+  onWillGotoSlide: (slideIndex) => {
+    console.log('onWillGotoSlide', slideIndex);
   },
   // 当前滑入的幻灯片及进度
   onSlideIn: (slideIndex, progress) => {
@@ -44,7 +44,7 @@ const handlers: SwiperHandlers = {
     console.log('onSlideOut', slideIndex, progress);
   },
   // 整体滑动的进度
-  onProgress: (currentCardIndex, progress) => {
+  onProgress: (currentSlideIndex, progress) => {
   },
 };
 ```
@@ -55,7 +55,7 @@ const handlers: SwiperHandlers = {
 import {SwiperPlugin, SwiperData} from '@alipay/ge-effects-components';
 
 const config: SwiperData = {
-  initCardIndex: number, // 初始化定位的卡片索引，从0开始
+  initSlideIndex: number, // 初始化定位的卡片索引，从0开始
   loop: boolean, // 是否循环
   autoPlay: boolean, // 是否自动播放
   autoPlaySpeed: number, // 自动播放速度
@@ -81,7 +81,7 @@ export class CustomController extends SwiperController {
   getTransformByProgress({ progressInTotal }: {progressInTotal: number}) {
     const positions: [number, number, number][] = [];
     const rotations: [number, number, number][] = []
-    for (let i = 0; i < this.cardCount; i++) {
+    for (let i = 0; i < this.slideCount; i++) {
       positions.push([0, 0, 0]);
       rotations.push([0, 0, 0]);
     }

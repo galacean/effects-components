@@ -14,7 +14,7 @@ const cameraOptions = {
 
 (async () => {
   try {
-    const initCardIndex = 2; // 从0开始
+    const initSlideIndex = 2; // 从0开始
     let swiper: Swiper | null = null;
     // 初始化轮播管理器
     const swiperManager = new SwiperManager({
@@ -25,7 +25,7 @@ const cameraOptions = {
       options: {
         // @ts-expect-error
         ...(sliderConfig.sliders[0].data as Partial<SwiperData>),
-        initCardIndex,
+        initSlideIndex,
         loop: true, // 幻灯片循环摆放
         slideDistance: 15, // 幻灯片间距
       },
@@ -48,7 +48,7 @@ const cameraOptions = {
       // 进场后自转一圈
       const playSlideCount = 5; // 播放的幻灯片数量
       const playDuration = 2000; // 播放时长，单位毫秒
-      const beginSlideIndex = initCardIndex; // 播放的起始幻灯片索引
+      const beginSlideIndex = initSlideIndex; // 播放的起始幻灯片索引
 
       swiper.currentDirection = 1; // 播放方向，1为向右，-1为向左
       void swiper.fastPlay(playSlideCount, { playDuration, beginSlideIndex });

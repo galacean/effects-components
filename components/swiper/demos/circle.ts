@@ -15,11 +15,11 @@ const mainJSON =
       interactive: true,
     });
 
-    const initCardIndex = 0;
+    const initSlideIndex = 0;
     // 加载合成，可以先只加载主场景和初始幻灯片
     const composition = await player.loadScene(mainJSON);
 
-    CircleRotateController.cardRotateAngle = 0;
+    CircleRotateController.slideRotateAngle = 0;
 
     // 初始化轮播管理器
     const swiperManager = new SwiperManager({
@@ -27,13 +27,13 @@ const mainJSON =
       slideCompositions: [],
       player: player,
       options: {
-        initCardIndex,
+        initSlideIndex,
         swipeEasing: [0.1, 0.1, 0.9, 0.9],
         // radius: 30,
       },
       handlers: {
-        onWillGotoCard: index => {
-          console.info('onWillGotoCard', index);
+        onWillGotoSlide: index => {
+          console.info('onWillGotoSlide', index);
         },
       },
     });
@@ -48,9 +48,9 @@ const mainJSON =
       const target = (e.target as HTMLElement).closest('button');
 
       if (target) {
-        const cardIndex = Number(target.dataset.index) - 1;
+        const slideIndex = Number(target.dataset.index) - 1;
 
-        void swiper?.gotoSlideIndex(cardIndex);
+        void swiper?.gotoSlideIndex(slideIndex);
       }
     });
 

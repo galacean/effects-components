@@ -4,7 +4,7 @@ import '@galacean/effects-plugin-spine';
 
 const container = document.getElementById('J-container')!;
 
-const mainJSON = 'https://mdn.alipayobjects.com/mars/afts/file/A*-K-aQpVtqwAAAAAAQPAAAAgAelB4AQ';
+const mainJSON = 'https://mdn.alipayobjects.com/mars/afts/file/A*elINQpOIJR0AAAAAQPAAAAgAelB4AQ';
 
 const slideJSON = [
   'https://mdn.alipayobjects.com/mars/afts/file/A*hhQHS6yU3V8AAAAAQKAAAAgAelB4AQ',
@@ -23,7 +23,7 @@ const slideJSON = [
       interactive: true,
     });
 
-    const initCardIndex = 0;
+    const initSlideIndex = 0;
     // 加载合成，可以先只加载主场景和初始幻灯片
     const compositions = await player.loadScene([mainJSON, ...slideJSON]);
 
@@ -33,18 +33,14 @@ const slideJSON = [
       slideCompositions: compositions.slice(1).map((comp, index) => ({ composition: comp, index, url: slideJSON[index] })),
       player: player,
       options: {
-        initCardIndex,
+        initSlideIndex,
         enterDuration: 2,
         enterEasing: [0.115, 0, 0.002, 1],
         enterLoopCount: 2,
       },
       handlers: {
-        onWillGotoCard (index) {
-          console.info('onWillGotoCard', index);
-        },
-        // 需要在合成中添加交互元素，点击回调才能生效
-        onSlideClick (clickIndex, itemNames) {
-          console.info('clickIndex', clickIndex, 'itemNames', itemNames);
+        onWillGotoSlide (index) {
+          console.info('onWillGotoSlide', index);
         },
       },
     });

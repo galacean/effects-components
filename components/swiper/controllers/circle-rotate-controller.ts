@@ -20,8 +20,8 @@ export class CircleRotateController extends SwiperController {
     [0.16865, 0, 0, -0.985675],
   ];
   easeOut = BezierEasing(.59, 0, 1, .45);
-  cardParkRotationRatio: number[] = [];
-  static cardRotateAngle = 0;
+  slideParkRotationRatio: number[] = [];
+  static slideRotateAngle = 0;
   distance = 0;
   diffFromStart = 0;
   currentDirection = 1;
@@ -34,22 +34,22 @@ export class CircleRotateController extends SwiperController {
   initParkRatio () {
     const { neighborDistance } = CircleRotateController;
 
-    this.cardParkRotationRatio.push(0, neighborDistance);
-    const leftPiece = (1 - neighborDistance * 2) / (this.cardCount - 2);
+    this.slideParkRotationRatio.push(0, neighborDistance);
+    const leftPiece = (1 - neighborDistance * 2) / (this.slideCount - 2);
     let distance = neighborDistance;
 
-    for (let i = 2; i < this.cardCount; i++) {
+    for (let i = 2; i < this.slideCount; i++) {
       distance += leftPiece;
-      this.cardParkRotationRatio.push(distance);
+      this.slideParkRotationRatio.push(distance);
     }
-    this.cardParkRotationRatio.push(1);
+    this.slideParkRotationRatio.push(1);
   }
 
   override init () {
     this.initParkRatio();
     this.getCenterItem();
     this.setUpSlide();
-    this.onSlidePark(this.options.initCardIndex);
+    this.onSlidePark(this.options.initSlideIndex);
   }
 
   override onPlayerTick () {
@@ -71,10 +71,10 @@ export class CircleRotateController extends SwiperController {
   }
 
   setUpSlide () {
-    this.slideControllers = this.cardItems.map((item, index) => {
+    this.slideControllers = this.slideItems.map((item, index) => {
       const centerItem = item.parent;
       const videoUrl = '';
-      const slideController = new SlideController(item, centerItem, index, this.cardCount, videoUrl, this.swiper.composition!, this.options, CircleRotateController.cardRotateAngle, this.cardParkRotationRatio);
+      const slideController = new SlideController(item, centerItem, index, this.slideCount, videoUrl, this.swiper.composition!, this.options, CircleRotateController.slideRotateAngle, this.slideParkRotationRatio);
 
       slideController.init();
 
@@ -82,26 +82,26 @@ export class CircleRotateController extends SwiperController {
     });
   }
 
-  override onSlideOut (cardIndex: number, progress: number, { speed, leftCount, canCallReverse = true, isDrag }: { speed?: number, canCallReverse?: boolean, leftCount?: number, isDrag?: boolean } = {}) {
-    super.onSlideOut(cardIndex, progress, { speed, leftCount, isDrag });
+  override onSlideOut (slideIndex: number, progress: number, { speed, leftCount, canCallReverse = true, isDrag }: { speed?: number, canCallReverse?: boolean, leftCount?: number, isDrag?: boolean } = {}) {
+    super.onSlideOut(slideIndex, progress, { speed, leftCount, isDrag });
 
     if (this.swiper.downgrade) {
       return;
     }
     const easingProgress = this.easeOut.easing(1 - progress);
-    const controller = this.slideControllers[cardIndex];
+    const controller = this.slideControllers[slideIndex];
 
     void controller.fromRotateToAlign(easingProgress, this.slideQuaternions[0]);
   }
 
-  override onSlideIn (cardIndex: number, progress: number, { speed, leftCount, canCallReverse = true, isDrag }: { speed?: number, canCallReverse?: boolean, leftCount?: number, isDrag?: boolean } = {}) {
-    super.onSlideIn(cardIndex, progress, { speed, leftCount, isDrag });
+  override onSlideIn (slideIndex: number, progress: number, { speed, leftCount, canCallReverse = true, isDrag }: { speed?: number, canCallReverse?: boolean, leftCount?: number, isDrag?: boolean } = {}) {
+    super.onSlideIn(slideIndex, progress, { speed, leftCount, isDrag });
     if (this.swiper.downgrade) {
       return;
     }
     const easingProgress = this.easeOut.easing(progress);
     // 滑走摆正还原成倾斜
-    const controller = this.slideControllers[cardIndex];
+    const controller = this.slideControllers[slideIndex];
 
     void controller.fromRotateToAlign(easingProgress, this.slideQuaternions[0]);
   }
@@ -111,8 +111,8 @@ export class CircleRotateController extends SwiperController {
     this.currentDirection *= -1;
   }
 
-  override onSlidePark (cardIndex: number) {
-    super.onSlidePark(cardIndex);
+  override onSlidePark (slideIndex: number) {
+    super.onSlidePark(slideIndex);
     if (this.swiper.downgrade) {
       return;
     }
@@ -146,7 +146,7 @@ export class CircleRotateController extends SwiperController {
     if (this.swiper.downgrade) {
       return;
     }
-    for (let i = 0; i < this.cardCount; i++) {
+    for (let i = 0; i < this.slideCount; i++) {
       if (!progressSlides.includes(i)) {
         void this.slideControllers[i].fromRotateToAlign(0, this.slideQuaternions[0]);
       }
@@ -183,8 +183,8 @@ export class CircleRotateController extends SwiperController {
     return distance * 0.13 + Math.abs(diffFromStart * distance) * Math.sign(distance) * 0.002;
   }
 
-  override willPlayBack (progressInCard: number): boolean | void {
-    return Math.abs(progressInCard) < this.options.playBackRatio;
+  override willPlayBack (progressInSlide: number): boolean | void {
+    return Math.abs(progressInSlide) < this.options.playBackRatio;
   }
 }
 

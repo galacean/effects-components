@@ -40,7 +40,7 @@ export type SwiperData = {
   startPanThreshold: number, // 滑动开始阈值（避免频繁触发onSlidePark），单位像素
   slides: SlideData[], // 幻灯片控制元素列表
   slideNames: string[], // 幻灯片名称列表，可以调整幻灯片的顺序及仅隐藏部分幻灯片（仅传一个合成时生效）
-  initCardIndex: number, // 初始化定位的卡片索引，从1开始
+  initSlideIndex: number, // 初始化定位的卡片索引，从1开始
   centerAnimationLoop: boolean, // 居中动画是否循环
   loop: boolean, // 是否循环
   autoPlay: boolean, // 是否自动播放
@@ -102,7 +102,7 @@ export function getDefaultSwiperData (): SwiperData {
     slides: [{
       controlItemId: '',
     }],
-    initCardIndex: 0,
+    initSlideIndex: 0,
     loop: false,
     centerAnimationLoop: true,
     autoPlay: false,

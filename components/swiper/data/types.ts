@@ -3,9 +3,9 @@ import type { Texture } from '@galacean/effects';
 export type SwiperHandlers = {
   /**
    * 转动到 slideIndex 对应卡片时的回调，手松开时触发，或者调gotoSlideIndex时触发
-   * @param cardIndex
+   * @param slideIndex
    */
-  onWillGotoCard?: (slideIndex: number, data: { isFastDrag: boolean, isGoto: boolean }) => void,
+  onWillGotoSlide?: (slideIndex: number, data: { isFastDrag: boolean, isGoto: boolean }) => void,
   /**
    * 当前角度在总角度中的占比，0 表示在最左侧，1 表示在最右侧
    * @param progress
@@ -13,8 +13,8 @@ export type SwiperHandlers = {
    */
   onProgress?: (progress: number, data: { speed?: number, dragDirection: number, totalDirection: number, progressInSlide: number }) => void,
   /**
-   * 转动到 cardIndex 对应卡片时的回调
-   * @param cardIndex
+   * 转动到 slideIndex 对应卡片时的回调
+   * @param slideIndex
    * @param rotate
    */
   onSlidePark?: (slideIndex: number, data: { addSlideCount: number }) => void,

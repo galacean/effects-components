@@ -88,11 +88,11 @@ export class SwiperManager {
     }
   }
 
-  async setUpLoading (cardCount: number, loadingJSON: any) {
+  async setUpLoading (slideCount: number, loadingJSON: any) {
     let j = 0;
     const newSlideCompositions: { composition: Composition, index: number, url: string }[] = [];
 
-    for (let i = 0; i < cardCount; i++) {
+    for (let i = 0; i < slideCount; i++) {
       if (j < this.slideCompositions.length && this.slideCompositions[j].index === i) {
         newSlideCompositions.push(this.slideCompositions[j]);
         j++;
@@ -141,81 +141,81 @@ export class SwiperManager {
       autoPause: this.autoPause,
     }, this.options, {
       ...this.handlers,
-      onSlidePark: (cardIndex, data) => {
+      onSlidePark: (slideIndex, data) => {
         this.playIdleAndCenterAnimation();
-        this.handlers.onSlidePark?.(cardIndex, data);
-        this.swiper?.controller.onSlidePark(cardIndex);
+        this.handlers.onSlidePark?.(slideIndex, data);
+        this.swiper?.controller.onSlidePark(slideIndex);
       },
-      onSlideIn: (cardIndex, progress, data) => {
+      onSlideIn: (slideIndex, progress, data) => {
         this.stopAllPlay();
-        const animationType = this.slideInSplit(cardIndex) ? (data.side === 'left' ? 'slideInAnimationLeft' : 'slideInAnimationRight') : 'slideInAnimation';
-        const slideInAnimation = this.getAnimationId(cardIndex, animationType);
+        const animationType = this.slideInSplit(slideIndex) ? (data.side === 'left' ? 'slideInAnimationLeft' : 'slideInAnimationRight') : 'slideInAnimation';
+        const slideInAnimation = this.getAnimationId(slideIndex, animationType);
 
-        this.swiper?.controller.onSlideIn(cardIndex, progress, data);
+        this.swiper?.controller.onSlideIn(slideIndex, progress, data);
         if (!slideInAnimation) {
           return;
         }
-        const prevAnimationType = this.currentPlayAnimationNames[cardIndex];
+        const prevAnimationType = this.currentPlayAnimationNames[slideIndex];
         const stopTransitionProgress = this.options.centerToSlideOutSplit;
 
         if (!this.downgrade && ['centerAnimation'].includes(prevAnimationType) && progress >= (1 - stopTransitionProgress)) {
-          const slideInAnimationClip = this.getAnimationClip(slideInAnimation, cardIndex);
+          const slideInAnimationClip = this.getAnimationClip(slideInAnimation, slideIndex);
 
           animationTransition({
             progress: (1 - progress) / (1 - stopTransitionProgress),
-            animationClipA: this.getAnimationClip(this.getAnimationId(cardIndex, 'centerAnimation'), cardIndex),
+            animationClipA: this.getAnimationClip(this.getAnimationId(slideIndex, 'centerAnimation'), slideIndex),
             animationClipB: slideInAnimationClip,
-            aTime: this.currentPlayAnimationTimes[cardIndex],
+            aTime: this.currentPlayAnimationTimes[slideIndex],
             bTime: stopTransitionProgress * slideInAnimationClip.duration,
-            vfxItem: this.controlItems[cardIndex],
+            vfxItem: this.controlItems[slideIndex],
           });
         } else {
-          this.playAnimationClipFrame(slideInAnimation, progress, cardIndex, animationType);
+          this.playAnimationClipFrame(slideInAnimation, progress, slideIndex, animationType);
         }
-        this.handlers.onSlideIn?.(cardIndex, progress, data);
+        this.handlers.onSlideIn?.(slideIndex, progress, data);
       },
-      onSlideOut: (cardIndex, progress, data) => {
+      onSlideOut: (slideIndex, progress, data) => {
         this.stopAllPlay();
-        const animationType = this.slideInSplit(cardIndex) ? (data.side === 'left' ? 'slideInAnimationLeft' : 'slideInAnimationRight') : 'slideInAnimation';
-        const slideInAnimation = this.getAnimationId(cardIndex, animationType);
+        const animationType = this.slideInSplit(slideIndex) ? (data.side === 'left' ? 'slideInAnimationLeft' : 'slideInAnimationRight') : 'slideInAnimation';
+        const slideInAnimation = this.getAnimationId(slideIndex, animationType);
 
-        this.swiper?.controller.onSlideOut(cardIndex, progress, data);
+        this.swiper?.controller.onSlideOut(slideIndex, progress, data);
         if (!slideInAnimation) {
           return;
         }
 
-        const prevAnimationType = this.currentPlayAnimationNames[cardIndex];
+        const prevAnimationType = this.currentPlayAnimationNames[slideIndex];
         const stopTransitionProgress = prevAnimationType === 'centerAnimation' ? 1 - this.options.centerToSlideOutSplit : 1 - this.options.enterToSlideOutSplit;
 
         if (!this.downgrade && ['centerAnimation', 'idleAnimationRight'].includes(prevAnimationType) && progress <= stopTransitionProgress) {
-          const slideInAnimationClip = this.getAnimationClip(slideInAnimation, cardIndex);
+          const slideInAnimationClip = this.getAnimationClip(slideInAnimation, slideIndex);
 
           animationTransition({
             progress: progress / stopTransitionProgress,
-            animationClipA: this.getAnimationClip(prevAnimationType === 'centerAnimation' ? this.getAnimationId(cardIndex, 'centerAnimation') : this.getAutoIdleAnimation(cardIndex, prevAnimationType as 'idleAnimation'), cardIndex),
+            animationClipA: this.getAnimationClip(prevAnimationType === 'centerAnimation' ? this.getAnimationId(slideIndex, 'centerAnimation') : this.getAutoIdleAnimation(slideIndex, prevAnimationType as 'idleAnimation'), slideIndex),
             animationClipB: slideInAnimationClip,
-            aTime: this.currentPlayAnimationTimes[cardIndex],
+            aTime: this.currentPlayAnimationTimes[slideIndex],
             bTime: (1 - stopTransitionProgress) * slideInAnimationClip.duration,
-            vfxItem: this.controlItems[cardIndex],
+            vfxItem: this.controlItems[slideIndex],
           });
         } else {
-          this.playAnimationClipFrame(slideInAnimation, 1 - progress, cardIndex, animationType);
+          this.playAnimationClipFrame(slideInAnimation, 1 - progress, slideIndex, animationType);
         }
-        this.handlers.onSlideOut?.(cardIndex, progress, data);
+        this.handlers.onSlideOut?.(slideIndex, progress, data);
       },
       onSlidesIdle: slideIndexList => {
         assertExist(this.swiper, 'onSlidesIdle this.swiper');
-        const { cardIndexList } = this.swiper.controller;
+        const { slideIndexList: orderedSlideIndexList } = this.swiper.controller;
 
         slideIndexList.forEach(i => {
           assertExist(this.swiper, 'onSlidesIdle this.swiper');
           const animationName = this.idleSplit(i) ?
-            (cardIndexList.indexOf(i) < cardIndexList.indexOf(this.swiper.getCurrentIndex()) ? 'idleAnimationLeft' : 'idleAnimationRight') : 'idleAnimation';
+            (orderedSlideIndexList.indexOf(i) < orderedSlideIndexList.indexOf(this.swiper.getCurrentIndex()) ? 'idleAnimationLeft' : 'idleAnimationRight') : 'idleAnimation';
 
           // 如果有自定义idle动画，则在onSlidePark中处理
           if (!this.getAnimationId(i, animationName)) {
             const autoIdleName = this.slideInSplit(i) ?
-              (cardIndexList.indexOf(i) < cardIndexList.indexOf(this.swiper.getCurrentIndex()) ? 'idleAnimationLeft' : 'idleAnimationRight') : 'idleAnimation';
+              (orderedSlideIndexList.indexOf(i) < orderedSlideIndexList.indexOf(this.swiper.getCurrentIndex()) ? 'idleAnimationLeft' : 'idleAnimationRight') : 'idleAnimation';
 
             this.playIdleAnimationBySlideIn(i, autoIdleName);
           }
@@ -225,8 +225,8 @@ export class SwiperManager {
       onProgress: (progress, data) => {
         this.handlers.onProgress?.(progress, data);
       },
-      onWillGotoCard: (slideIndex, data) => {
-        this.handlers.onWillGotoCard?.(slideIndex, data);
+      onWillGotoSlide: (slideIndex, data) => {
+        this.handlers.onWillGotoSlide?.(slideIndex, data);
         this.sortRenderOrder();
       },
       getCanvasBounding: SwiperManager.getCanvasBounding,
@@ -255,7 +255,7 @@ export class SwiperManager {
     }
 
     if (this.downgrade || !this.options.enterAnimation) { // 有入场动画，onSlidePark在入场动画结束后再播
-      this.handlers.onSlidePark?.(this.options.initCardIndex, { addSlideCount: 0 });
+      this.handlers.onSlidePark?.(this.options.initSlideIndex, { addSlideCount: 0 });
     }
 
     return this.swiper;
@@ -282,7 +282,7 @@ export class SwiperManager {
   } = {}) {
     assertExist(this.swiper, 'loopPlay this.swiper');
     // 循环播放时，先播放idle动画（动画不要动了）
-    for (let i = 0; i < this.swiper.cardCount; i++) {
+    for (let i = 0; i < this.swiper.slideCount; i++) {
       this.increaseCurrentPlayId(i);
       animationName ||= this.idleSplit(i) ? 'idleAnimationRight' : 'idleAnimation';
       if (!this.getAnimationId(i, animationName as 'idleAnimation')) {
@@ -294,12 +294,12 @@ export class SwiperManager {
     const play = (): Promise<void> => {
       assertExist(this.swiper, 'loopPlay this.swiper');
       this.swiper.currentDirection = 1;
-      const playCount = stopIndex === undefined ? this.swiper.cardCount * loopCount : stopIndex - this.swiper.getCurrentIndex() + this.swiper.cardCount * loopCount;
+      const playCount = stopIndex === undefined ? this.swiper.slideCount * loopCount : stopIndex - this.swiper.getCurrentIndex() + this.swiper.slideCount * loopCount;
 
       this.swiper.disableControl = true;
 
       return this.swiper.fastPlay(playCount, {
-        playDuration: duration || this.swiper.cardCount * 0.15 * speed * 1000,
+        playDuration: duration || this.swiper.slideCount * 0.15 * speed * 1000,
         easing,
         disableEvent,
         status,
@@ -336,7 +336,7 @@ export class SwiperManager {
     });
   }
 
-  // 将currentCardIndex的渲染层级摆在最上面
+  // 将currentSlideIndex的渲染层级摆在最上面
   private sortRenderOrder () {
     if (!this.options.autoRenderOrder) {
       return;
@@ -447,11 +447,11 @@ export class SwiperManager {
           data.composition.dispose();
         }
       });
-      const newCardCount = slideCompositionList.length;
+      const newSlideCount = slideCompositionList.length;
 
       this.slideCompositions = existSlideCompositions;
-      this.controlItems.length = newCardCount;
-      await this.setUpLoading(newCardCount, loadingJSON ?? this.slideLoadingJSON ?? defaultLoadingJSON);
+      this.controlItems.length = newSlideCount;
+      await this.setUpLoading(newSlideCount, loadingJSON ?? this.slideLoadingJSON ?? defaultLoadingJSON);
     }
     this.options = { ...this.options, ...options };
     this.createSwiper();
@@ -507,7 +507,7 @@ export class SwiperManager {
     const { enterAnimation, enterDuration, enterEasing, enterLoopCount } = this.options;
     const { disableDrag } = this.swiper;
 
-    // this.swiper.controller.onSlidePark(this.options.initCardIndex);
+    // this.swiper.controller.onSlidePark(this.options.initSlideIndex);
     this.swiper.disableDrag = true;
     this.swiper.playingEnterAnimation = true;
 
@@ -516,7 +516,7 @@ export class SwiperManager {
       duration: enterDuration * 1000,
       animationName: enterAnimation,
       easing: enterEasing,
-      stopIndex: this.options.initCardIndex,
+      stopIndex: this.options.initSlideIndex,
       loopCount: enterLoopCount,
     }).finally(() => {
       if (this.swiper) {
@@ -526,8 +526,8 @@ export class SwiperManager {
     });
 
     this.currentPlayAnimationTimes = [];
-    this.swiper.handlers.onSlidePark?.(this.options.initCardIndex, { addSlideCount: 0 });
-    this.swiper.controller.onWillGotoCard(this.options.initCardIndex); // 视频播放
+    this.swiper.handlers.onSlidePark?.(this.options.initSlideIndex, { addSlideCount: 0 });
+    this.swiper.controller.onWillGotoSlide(this.options.initSlideIndex); // 视频播放
     this.handlers.onEnterAnimationEnd?.();
   }
 
@@ -549,16 +549,16 @@ export class SwiperManager {
     this.disposers.push(this.player.on('update', update));
   }
 
-  private getAnimationId (cardIndex: number, animationType: AnimationType) {
-    return this.options.slides[cardIndex]?.[animationType] || this.options[animationType];
+  private getAnimationId (slideIndex: number, animationType: AnimationType) {
+    return this.options.slides[slideIndex]?.[animationType] || this.options[animationType];
   }
 
-  private slideInSplit (cardIndex: number) {
-    return this.options.slides[cardIndex]?.slideInSplit ?? this.options.slideInSplit;
+  private slideInSplit (slideIndex: number) {
+    return this.options.slides[slideIndex]?.slideInSplit ?? this.options.slideInSplit;
   }
 
-  private idleSplit (cardIndex: number) {
-    return this.options.slides[cardIndex]?.idleSplit ?? this.options.idleSplit;
+  private idleSplit (slideIndex: number) {
+    return this.options.slides[slideIndex]?.idleSplit ?? this.options.idleSplit;
   }
 
   private mergeSlidesConfig () {
@@ -612,45 +612,45 @@ export class SwiperManager {
 
   playIdleAndCenterAnimation () {
     assertExist(this.swiper, 'playIdleAndCenterAnimation this.swiper');
-    const currentCardIndex = this.swiper.getCurrentIndex();
+    const currentSlideIndex = this.swiper.getCurrentIndex();
     const length = this.downgrade ? this.controlElements.length : this.controlItems.length;
-    const { cardIndexList } = this.swiper.controller;
+    const { slideIndexList } = this.swiper.controller;
 
     for (let i = 0; i < length; i++) {
-      if (i !== currentCardIndex) {
+      if (i !== currentSlideIndex) {
         const playId = this.increaseCurrentPlayId(i);
         const animationName = this.idleSplit(i) ?
-          (cardIndexList.indexOf(i) < cardIndexList.indexOf(currentCardIndex) ? 'idleAnimationLeft' : 'idleAnimationRight') : 'idleAnimation';
+          (slideIndexList.indexOf(i) < slideIndexList.indexOf(currentSlideIndex) ? 'idleAnimationLeft' : 'idleAnimationRight') : 'idleAnimation';
 
         // 如果自定义idle动画，则使用；否则自动取slideIn的第一帧
         if (this.getAnimationId(i, animationName)) {
-          this.loopPlayCardAnimation(i, animationName, playId, true);
+          this.loopPlaySlideAnimation(i, animationName, playId, true);
         } else {
           const autoIdleName = this.slideInSplit(i) ?
-            (cardIndexList.indexOf(i) < cardIndexList.indexOf(currentCardIndex) ? 'idleAnimationLeft' : 'idleAnimationRight') : 'idleAnimation';
+            (slideIndexList.indexOf(i) < slideIndexList.indexOf(currentSlideIndex) ? 'idleAnimationLeft' : 'idleAnimationRight') : 'idleAnimation';
 
           this.playIdleAnimationBySlideIn(i, autoIdleName);
         }
       }
     }
-    const playId = this.increaseCurrentPlayId(currentCardIndex);
-    const startPlayTime = this.currentPlayAnimationNames[currentCardIndex] === 'centerAnimation' ? (this.currentPlayAnimationTimes[currentCardIndex] * 1000 || 0) : 0;
+    const playId = this.increaseCurrentPlayId(currentSlideIndex);
+    const startPlayTime = this.currentPlayAnimationNames[currentSlideIndex] === 'centerAnimation' ? (this.currentPlayAnimationTimes[currentSlideIndex] * 1000 || 0) : 0;
 
-    this.loopPlayCardAnimation(currentCardIndex, 'centerAnimation', playId, this.options.centerAnimationLoop, startPlayTime);
+    this.loopPlaySlideAnimation(currentSlideIndex, 'centerAnimation', playId, this.options.centerAnimationLoop, startPlayTime);
   }
 
-  playIdleAnimationBySlideIn (cardIndex: number, animationType: 'idleAnimationLeft' | 'idleAnimationRight' | 'idleAnimation') {
-    const slideInAnimation = this.getAutoIdleAnimation(cardIndex, animationType);
+  playIdleAnimationBySlideIn (slideIndex: number, animationType: 'idleAnimationLeft' | 'idleAnimationRight' | 'idleAnimation') {
+    const slideInAnimation = this.getAutoIdleAnimation(slideIndex, animationType);
 
     if (!slideInAnimation) {
       return;
     }
-    this.playAnimationClipFrame(slideInAnimation, 0, cardIndex, animationType);
+    this.playAnimationClipFrame(slideInAnimation, 0, slideIndex, animationType);
   }
 
-  private getAutoIdleAnimation (cardIndex: number, animationType: 'idleAnimationLeft' | 'idleAnimationRight' | 'idleAnimation') {
+  private getAutoIdleAnimation (slideIndex: number, animationType: 'idleAnimationLeft' | 'idleAnimationRight' | 'idleAnimation') {
     const slideInAnimationName = animationType.replace('idle', 'slideIn') as 'slideInAnimationLeft' | 'slideInAnimationRight' | 'slideInAnimation';
-    const slideInAnimation = this.getAnimationId(cardIndex, slideInAnimationName);
+    const slideInAnimation = this.getAnimationId(slideIndex, slideInAnimationName);
 
     return slideInAnimation;
   }
@@ -688,44 +688,44 @@ export class SwiperManager {
 
   }
 
-  private loopPlayCardAnimation (cardIndex: number, animationType: 'centerAnimation' | 'idleAnimation' | 'idleAnimationLeft' | 'idleAnimationRight', playId: number, loop: boolean, startPlayTime = 0) {
-    const animation = this.getAnimationId(cardIndex, animationType);
+  private loopPlaySlideAnimation (slideIndex: number, animationType: 'centerAnimation' | 'idleAnimation' | 'idleAnimationLeft' | 'idleAnimationRight', playId: number, loop: boolean, startPlayTime = 0) {
+    const animation = this.getAnimationId(slideIndex, animationType);
 
     if (!animation) {
       return;
     }
-    this.loopPlayAnimationClip(animation, this.controlItems[cardIndex], cardIndex, playId, loop, -1, startPlayTime);
-    this.currentPlayAnimationNames[cardIndex] = animationType;
+    this.loopPlayAnimationClip(animation, this.controlItems[slideIndex], slideIndex, playId, loop, -1, startPlayTime);
+    this.currentPlayAnimationNames[slideIndex] = animationType;
   }
 
-  private playAnimationClipFrame (animationId: string, progress: number, cardIndex: number, animationType: AnimationType) {
-    const clip = this.getAnimationClip(animationId, cardIndex);
+  private playAnimationClipFrame (animationId: string, progress: number, slideIndex: number, animationType: AnimationType) {
+    const clip = this.getAnimationClip(animationId, slideIndex);
     const time = progress * clip.duration;
 
-    this.sampleTheAnimation(clip, cardIndex, time);
-    this.currentPlayAnimationNames[cardIndex] = animationType;
+    this.sampleTheAnimation(clip, slideIndex, time);
+    this.currentPlayAnimationNames[slideIndex] = animationType;
   }
 
-  private sampleTheAnimation (clip: AnimationClip, cardIndex: number, time: number) {
+  private sampleTheAnimation (clip: AnimationClip, slideIndex: number, time: number) {
     if (this.downgrade) {
       assertExist(this.swiper, 'sampleTheAnimation this.swiper');
-      clip.sampleElement(this.controlElements[cardIndex].children[0] as HTMLElement, time, this.swiper.widthRatio);
+      clip.sampleElement(this.controlElements[slideIndex].children[0] as HTMLElement, time, this.swiper.widthRatio);
     } else {
-      const controlItem = this.controlItems[cardIndex];
+      const controlItem = this.controlItems[slideIndex];
 
       clip.sampleAnimation(controlItem, time);
     }
-    this.currentPlayAnimationTimes[cardIndex] = time;
+    this.currentPlayAnimationTimes[slideIndex] = time;
   }
 
-  private loopPlayAnimationClip (animationId: string, controlItem: PlayerVFXItem, cardIndex: number, playId: number, loop: boolean, beginTime = -1, startPlayTime = 0) {
-    if (!this.playCanceled[cardIndex] || this.playCanceled[cardIndex][playId]) {
+  private loopPlayAnimationClip (animationId: string, controlItem: PlayerVFXItem, slideIndex: number, playId: number, loop: boolean, beginTime = -1, startPlayTime = 0) {
+    if (!this.playCanceled[slideIndex] || this.playCanceled[slideIndex][playId]) {
       return;
     }
-    const clip = this.getAnimationClip(animationId, cardIndex);
+    const clip = this.getAnimationClip(animationId, slideIndex);
 
     const render = (currentTime: number) => {
-      if (this.playCanceled[cardIndex][playId]) {
+      if (this.playCanceled[slideIndex][playId]) {
         return;
       }
       if (beginTime <= 0) {
@@ -738,12 +738,12 @@ export class SwiperManager {
       } else {
         time = clamp(currentTime - beginTime + startPlayTime, 0, clip.duration * 1000);
       }
-      this.sampleTheAnimation(clip, cardIndex, time / 1000);
+      this.sampleTheAnimation(clip, slideIndex, time / 1000);
       if (!loop && currentTime - beginTime + startPlayTime > clip.duration * 1000) {
         return;
       }
       if (beginTime > 0) {
-        this.loopPlayAnimationClip(animationId, controlItem, cardIndex, playId, loop, beginTime, startPlayTime);
+        this.loopPlayAnimationClip(animationId, controlItem, slideIndex, playId, loop, beginTime, startPlayTime);
       }
     };
 
@@ -754,26 +754,26 @@ export class SwiperManager {
     this.swiper?.renderScheduler.requestAnimationFrame(render);
   }
 
-  private getAnimationClip (animationId: string, cardIndex: number) {
-    let clip = geJSONData.animationClips[animationId + cardIndex];
+  private getAnimationClip (animationId: string, slideIndex: number) {
+    let clip = geJSONData.animationClips[animationId + slideIndex];
 
     if (!clip) {
       clip = new AnimationClip();
       clip.fromData(geJSONData.animations[animationId]);
-      geJSONData.animationClips[animationId + cardIndex] = clip;
+      geJSONData.animationClips[animationId + slideIndex] = clip;
     }
 
     return clip;
   }
 
-  private increaseCurrentPlayId (cardIndex: number) {
-    for (let i = 0; i < this.playCanceled[cardIndex].length; i++) {
-      this.playCanceled[cardIndex][i] = true;
+  private increaseCurrentPlayId (slideIndex: number) {
+    for (let i = 0; i < this.playCanceled[slideIndex].length; i++) {
+      this.playCanceled[slideIndex][i] = true;
     }
-    const newId = (this.currentPlayId[cardIndex] + 1) % 10;
+    const newId = (this.currentPlayId[slideIndex] + 1) % 10;
 
-    this.currentPlayId[cardIndex] = newId;
-    this.playCanceled[cardIndex][newId] = false;
+    this.currentPlayId[slideIndex] = newId;
+    this.playCanceled[slideIndex][newId] = false;
 
     return newId;
   }

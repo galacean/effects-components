@@ -10,10 +10,10 @@ export class CircleFrontController extends SwiperController {
     const positions: [number, number, number][] = [];
 
     // 摆放成一个圆圈
-    for (let i = 0; i < this.cardCount; i++) {
+    for (let i = 0; i < this.slideCount; i++) {
       const slideIndex = i;
 
-      const initRotationY = (360 - (slideIndex * 360) / this.swiper.cardCount + 90) + progress * 360;
+      const initRotationY = (360 - (slideIndex * 360) / this.swiper.slideCount + 90) + progress * 360;
       const d = radius + slideIndex * 0.1;
       const x = d * Math.cos((Math.PI * 2 * initRotationY) / 360);
       const z = d * Math.sin((Math.PI * 2 * initRotationY) / 360);

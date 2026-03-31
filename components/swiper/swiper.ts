@@ -16,7 +16,7 @@ export class Swiper {
    * 卡片总数
    * @internal
    */
-  cardCount = 0;
+  slideCount = 0;
   /**
    * 总共允许的旋转角度范围
    * @internal
@@ -26,7 +26,7 @@ export class Swiper {
    * 当前卡片 ID
    * @internal
    */
-  private currentCardIndex = 0;
+  private currentSlideIndex = 0;
   /**
    * 当前正在播放的 ID
    * @internal
@@ -37,7 +37,7 @@ export class Swiper {
   private prevY = 0;
   startX = 0;
   /**
-   * 从当前 cardIndex 为起始计算的转动角，向右转增大
+   * 从当前 slideIndex 为起始计算的转动角，向右转增大
    * @internal
    */
   private currentRotate = 0;
@@ -69,7 +69,7 @@ export class Swiper {
   disableDrag = false; // 临时禁用滑动
   disableControl = false;
   private camera: PlayerCamera;
-  private progressInCard = 0;
+  private progressInSlide = 0;
   widthRatio = 1; // world to screen 宽度比例
   downgrade = false;
   autoPause = true;
@@ -79,13 +79,13 @@ export class Swiper {
   renderScheduler: RenderScheduler;
 
   constructor (
-    { target, composition, cameraOptions, controlItems, controlElements, cardCount, downgrade, autoPause }: {
+    { target, composition, cameraOptions, controlItems, controlElements, slideCount, downgrade, autoPause }: {
       target: HTMLElement,
       composition?: Composition,
       cameraOptions: any,
       controlItems?: PlayerVFXItem[], // 正常slide GE元素
       controlElements?: HTMLElement[], // 降级slide DOM元素
-      cardCount?: number,
+      slideCount?: number,
       downgrade?: boolean,
       autoPause?: boolean,
     },
@@ -106,8 +106,8 @@ export class Swiper {
     }
     this.renderScheduler = new RenderScheduler(renderComponent);
 
-    this.cardCount = cardCount || controlItems?.length || controlElements?.length || 0;
-    this.currentCardIndex = clamp(this.options.initCardIndex, 0, this.cardCount - 1);
+    this.slideCount = slideCount || controlItems?.length || controlElements?.length || 0;
+    this.currentSlideIndex = clamp(this.options.initSlideIndex, 0, this.slideCount - 1);
     this.swipeEasing = BezierEasing(...this.options.swipeEasing);
     this.swipeEasingLUT = getLUTOnCubicBezier(this.options.swipeEasing);
 
@@ -116,21 +116,20 @@ export class Swiper {
     if (!Controller) {
       throw new Error('Swiper effect template not found: ' + this.options.effectTemplate);
     }
-    // @ts-expect-error
     this.controller = new Controller(this.options, this);
     this.updateLength();
-    this.totalDegree = (this.cardCount - (options.loop ? 0 : 1)) * this.options.slideDistance;
+    this.totalDegree = (this.slideCount - (options.loop ? 0 : 1)) * this.options.slideDistance;
 
     this.bindDragStartEvent();
     this.controller.run(controlItems, controlElements);
   }
 
   setControlItems (items: PlayerVFXItem[]) {
-    this.controller.cardItems = items;
+    this.controller.slideItems = items;
   }
 
   getControlItems () {
-    return this.controller.cardItems;
+    return this.controller.slideItems;
   }
 
   beginAutoPlay () {
@@ -168,21 +167,21 @@ export class Swiper {
   }
 
   getNextIndex () {
-    return (this.currentCardIndex + 1) % this.cardCount;
+    return (this.currentSlideIndex + 1) % this.slideCount;
   }
 
   getPrevIndex () {
-    return (this.currentCardIndex - 1 + this.cardCount) % this.cardCount;
+    return (this.currentSlideIndex - 1 + this.slideCount) % this.slideCount;
   }
 
   /**
    * 移动到指定 index 对应的卡片
-   * @param index - 范围 [0, card.length - 1]
+   * @param index - 范围 [0, slide.length - 1]
    */
   async gotoSlideIndex (index: number, { direction, duration }: { direction?: -1 | 1, duration?: number } = {}) {
-    if (index < 0 || index > this.cardCount - 1 || isNaN(index)) {
+    if (index < 0 || index > this.slideCount - 1 || isNaN(index)) {
       console.error(
-        `Error: Slide index(${index}) out of range, must in [0, ${this.cardCount}).`,
+        `Error: Slide index(${index}) out of range, must in [0, ${this.slideCount}).`,
       );
 
       return;
@@ -197,15 +196,15 @@ export class Swiper {
       return;
     }
 
-    this.handlers.onWillGotoCard?.(index, { isFastDrag: false, isGoto: true });
+    this.handlers.onWillGotoSlide?.(index, { isFastDrag: false, isGoto: true });
     this.draggedRotate = 0;
-    let diff = index - this.currentCardIndex;
+    let diff = index - this.currentSlideIndex;
 
     this.currentDirection = diff === 0 ? Math.sign(this.currentRotate) : Math.sign(diff);
 
     if (this.options.loop && direction && this.currentDirection !== direction) {
       this.currentDirection *= -1;
-      diff += this.cardCount * direction;
+      diff += this.slideCount * direction;
     }
     await this.fastPlay(Math.abs(diff), {
       playDuration: duration,
@@ -217,7 +216,7 @@ export class Swiper {
    * @returns
    */
   getCurrentIndex () {
-    return this.currentCardIndex;
+    return this.currentSlideIndex;
   }
 
   private bindDragStartEvent () {
@@ -283,11 +282,11 @@ export class Swiper {
 
     this.draggedRotate = this.currentRotate;
     if (!this.options.loop) {
-      let right = this.currentCardIndex * this.options.slideDistance;
-      let left = (this.cardCount - this.currentCardIndex - 1) * this.options.slideDistance;
+      let right = this.currentSlideIndex * this.options.slideDistance;
+      let left = (this.slideCount - this.currentSlideIndex - 1) * this.options.slideDistance;
 
       // 允许在边缘的时候有一个弹性效果
-      if (this.cardCount > 1) {
+      if (this.slideCount > 1) {
         right += this.options.slideDistance * 0.5;
         left += this.options.slideDistance * 0.5;
       }
@@ -349,7 +348,7 @@ export class Swiper {
     if (this.draggedRotate === 0 || Math.sign(prevDraggedRotate) !== Math.sign(this.draggedRotate)) {
       this.controller.onDragSwap();
     }
-    if (this.cardCount > 1) {
+    if (this.slideCount > 1) {
       this.draggedRotate %= this.totalDegree;
     }
     if (direction && this.currentDirection && this.currentDirection !== direction) {
@@ -361,7 +360,7 @@ export class Swiper {
     if (Math.abs(this.draggedRotate) >= this.options.slideDistance) {
       const count = Math.floor(Math.abs(this.draggedRotate) / this.options.slideDistance);
 
-      this.currentCardIndex = (this.currentCardIndex + this.currentDirection * count + this.cardCount) % this.cardCount;
+      this.currentSlideIndex = (this.currentSlideIndex + this.currentDirection * count + this.slideCount) % this.slideCount;
       this.draggedRotate += this.options.slideDistance * this.currentDirection * count;
       this.startX = posX;
       this.controller.onDragExceedSlide();
@@ -389,8 +388,8 @@ export class Swiper {
   }
 
   updateTransform (speed?: number) {
-    const progressInCard = this.getProgressInCard();
-    let progressInTotal = ((this.currentCardIndex - progressInCard) / (this.cardCount - (this.options.loop ? 0 : 1)) + 1) + Number.EPSILON;
+    const progressInSlide = this.getProgressInSlide();
+    let progressInTotal = ((this.currentSlideIndex - progressInSlide) / (this.slideCount - (this.options.loop ? 0 : 1)) + 1) + Number.EPSILON;
 
     if (this.options.loop) {
       progressInTotal %= 1;
@@ -398,10 +397,10 @@ export class Swiper {
       progressInTotal = clamp(Math.abs(progressInTotal) - 1, 0, 1);
     }
 
-    this.controller.updateTransform(progressInCard, progressInTotal, speed);
-    this.progressInCard = progressInCard;
+    this.controller.updateTransform(progressInSlide, progressInTotal, speed);
+    this.progressInSlide = progressInSlide;
 
-    return { progressInTotal, progressInCard };
+    return { progressInTotal, progressInSlide };
   }
 
   triggerProgressEvents ({ speed, leftCount, isDrag, disableIdle }: { speed?: number, leftCount?: number, isDrag?: boolean, disableIdle?: boolean } = {}) {
@@ -411,7 +410,7 @@ export class Swiper {
       return;
     }
 
-    const { progressInCard, progressInTotal } = this.updateTransform(speed);
+    const { progressInSlide, progressInTotal } = this.updateTransform(speed);
 
     let slideInIndex = 0;
     let slideOutIndex = 0;
@@ -420,42 +419,42 @@ export class Swiper {
 
     let side: 'left' | 'right' = 'left';
 
-    if (progressInCard < 0 || progressInCard === 0 && this.progressInCard < 0) { // 整体在当前卡片的左边
+    if (progressInSlide < 0 || progressInSlide === 0 && this.progressInSlide < 0) { // 整体在当前卡片的左边
       side = 'left';
       if (direction > 0) { // 向右滑动
         slideInIndex = this.getNextIndex();
-        slideOutIndex = this.currentCardIndex;
-        slideInProgress = -progressInCard;
-        slideOutProgress = -progressInCard;
+        slideOutIndex = this.currentSlideIndex;
+        slideInProgress = -progressInSlide;
+        slideOutProgress = -progressInSlide;
       } else { // 向左滑动
-        slideInIndex = this.currentCardIndex;
+        slideInIndex = this.currentSlideIndex;
         slideOutIndex = this.getNextIndex();
-        slideInProgress = 1 + progressInCard;
-        slideOutProgress = 1 + progressInCard;
+        slideInProgress = 1 + progressInSlide;
+        slideOutProgress = 1 + progressInSlide;
       }
     } else { // 整体在当前卡片的右边
       side = 'right';
       if (direction > 0) { // 向右滑动
-        slideInIndex = this.currentCardIndex;
+        slideInIndex = this.currentSlideIndex;
         slideOutIndex = this.getPrevIndex();
-        slideInProgress = 1 - progressInCard;
-        slideOutProgress = 1 - progressInCard;
+        slideInProgress = 1 - progressInSlide;
+        slideOutProgress = 1 - progressInSlide;
       } else { // 向左滑动
         slideInIndex = this.getPrevIndex();
-        slideOutIndex = this.currentCardIndex;
-        slideInProgress = progressInCard;
-        slideOutProgress = progressInCard;
+        slideOutIndex = this.currentSlideIndex;
+        slideInProgress = progressInSlide;
+        slideOutProgress = progressInSlide;
       }
     }
 
     const opposite = side === 'left' ? 'right' : 'left';
 
-    this.handlers.onSlideIn?.(slideInIndex, slideInProgress, { speed, leftCount, isDrag, side: slideInIndex === this.currentCardIndex ? side : opposite });
-    this.handlers.onSlideOut?.(slideOutIndex, slideOutProgress, { speed, leftCount, isDrag, side: slideOutIndex === this.currentCardIndex ? side : opposite });
+    this.handlers.onSlideIn?.(slideInIndex, slideInProgress, { speed, leftCount, isDrag, side: slideInIndex === this.currentSlideIndex ? side : opposite });
+    this.handlers.onSlideOut?.(slideOutIndex, slideOutProgress, { speed, leftCount, isDrag, side: slideOutIndex === this.currentSlideIndex ? side : opposite });
     if (!disableIdle) {
       const idleSlideIndexList: number[] = [];
 
-      for (let i = 0; i < this.cardCount; i++) {
+      for (let i = 0; i < this.slideCount; i++) {
         if (i !== slideInIndex && i !== slideOutIndex) {
           idleSlideIndexList.push(i);
         }
@@ -466,19 +465,19 @@ export class Swiper {
     const progressData = {
       speed,
       dragDirection: this.currentDirection,
-      totalDirection: progressInCard === 0 ? 0 : -Math.sign(progressInCard),
-      progressInSlide: Math.abs(progressInCard),
+      totalDirection: progressInSlide === 0 ? 0 : -Math.sign(progressInSlide),
+      progressInSlide: Math.abs(progressInSlide),
     };
 
     this.handlers.onProgress?.(progressInTotal, progressData);
     this.controller.onProgress(progressInTotal, progressData);
-    this.progressInCard = progressInCard;
+    this.progressInSlide = progressInSlide;
   }
 
-  private getProgressInCard () {
-    const perCardDistance = this.options.slideDistance;
+  private getProgressInSlide () {
+    const perSlideDistance = this.options.slideDistance;
 
-    return this.currentRotate / perCardDistance;
+    return this.currentRotate / perSlideDistance;
   }
 
   private handleDragEnd = (event: TouchEvent | MouseEvent) => {
@@ -496,19 +495,19 @@ export class Swiper {
         normalPlay = false;
         const playSlideCount = Math.round(clamp(Math.sqrt(Math.round(dragSpeed * 5)), 1, 10) * this.options.fastDragAmplitude);
 
-        this.handlers.onWillGotoCard?.((this.currentCardIndex + playSlideCount * this.currentDirection + this.cardCount * 10) % this.cardCount, { isFastDrag: true, isGoto: false });
+        this.handlers.onWillGotoSlide?.((this.currentSlideIndex + playSlideCount * this.currentDirection + this.slideCount * 10) % this.slideCount, { isFastDrag: true, isGoto: false });
         void this.fastPlay(playSlideCount);
       }
     }
 
     if (normalPlay) {
       const diffFromStartX = this.prevX - this.startX;
-      let back = this.controller.willPlayBack(this.getProgressInCard());
+      let back = this.controller.willPlayBack(this.getProgressInSlide());
 
       if (back === undefined) {
         back = !this.options.loop && (
-          this.currentCardIndex === this.cardCount - 1 && this.draggedRotate < 0
-            || this.currentCardIndex === 0 && this.draggedRotate > 0)
+          this.currentSlideIndex === this.slideCount - 1 && this.draggedRotate < 0
+            || this.currentSlideIndex === 0 && this.draggedRotate > 0)
           || Math.abs(this.draggedRotate) < this.controller.getDistance(this.options.slideDistance, diffFromStartX) * this.options.playBackRatio;
       }
       this.playSwipe(back);
@@ -534,7 +533,7 @@ export class Swiper {
     const { slideDistance } = this.options;
 
     const playTotalDegree = slideDistance * playSlideCount * -this.currentDirection - this.currentRotate;
-    const beginCardIndex = beginSlideIndex ?? this.currentCardIndex;
+    const beginCardIndex = beginSlideIndex ?? this.currentSlideIndex;
 
     playDuration ??= Math.sqrt(playSlideCount || 1) * 500 * this.options.fastDragTimeRatio;
 
@@ -551,7 +550,7 @@ export class Swiper {
       const addCount = progress === 1 ? playSlideCount : Math.floor(Math.abs(currentRotate / slideDistance));
       const leftCount = playSlideCount - addCount;
 
-      this.currentCardIndex = (beginCardIndex + addCount * this.currentDirection + this.cardCount * 10) % this.cardCount;
+      this.currentSlideIndex = (beginCardIndex + addCount * this.currentDirection + this.slideCount * 10) % this.slideCount;
       this.currentRotate = currentRotate + slideDistance * this.currentDirection * addCount;
       if (disableEvent === 'none' || disableEvent === 'keepLast' && leftCount <= 1) {
         this.triggerProgressEvents({ speed, leftCount, disableIdle: disableEvent === 'keepLast' });
@@ -566,7 +565,7 @@ export class Swiper {
       // 循环的时候需要在currentCardIndex改变后修改卡片排列顺序
       this.controller.updateTransform(0, this.getProgress());
       if (disableEvent !== 'total') {
-        this.handlers.onSlidePark?.(this.currentCardIndex, { addSlideCount: playSlideCount });
+        this.handlers.onSlidePark?.(this.currentSlideIndex, { addSlideCount: playSlideCount });
       }
       this.currentDirection = 0;
       if (this.options.autoPlay && !this.autoPlayStop) {
@@ -588,10 +587,10 @@ export class Swiper {
     // 应当改变的卡片数
     const addCount = back ? 0 : this.getAddCount();
     // 新的卡片 index
-    const newIndex = (this.currentCardIndex - addCount + this.cardCount) % this.cardCount;
+    const newIndex = (this.currentSlideIndex - addCount + this.slideCount) % this.slideCount;
 
-    this.handlers.onWillGotoCard?.(newIndex, { isFastDrag: false, isGoto: false });
-    this.controller.onWillGotoCard(newIndex);
+    this.handlers.onWillGotoSlide?.(newIndex, { isFastDrag: false, isGoto: false });
+    this.controller.onWillGotoSlide(newIndex);
     // 开始转动的角度
     const startRotate = this.currentRotate;
 
@@ -675,13 +674,13 @@ export class Swiper {
       });
     } else {
       window.clearTimeout(resetPlayTID);
-      this.currentCardIndex = newIndex;
+      this.currentSlideIndex = newIndex;
       this.currentRotate = 0;
       this.currentDirection = 0;
-      // 循环的时候需要在currentCardIndex改变后修改卡片排列顺序
+      // 循环的时候需要在currentSlideIndex改变后修改卡片排列顺序
       this.controller.updateTransform(0, this.getProgress());
 
-      this.handlers.onSlidePark?.(this.currentCardIndex, { addSlideCount: 1 });
+      this.handlers.onSlidePark?.(this.currentSlideIndex, { addSlideCount: 1 });
       if (this.options.autoPlay && !this.autoPlayStop) {
         this.beginAutoPlay();
       }
@@ -689,7 +688,7 @@ export class Swiper {
   }
 
   getProgress () {
-    return this.currentCardIndex / (this.cardCount - (this.options.loop ? 0 : 1));
+    return this.currentSlideIndex / (this.slideCount - (this.options.loop ? 0 : 1));
   }
 
   private increaseCurrentPlayId () {

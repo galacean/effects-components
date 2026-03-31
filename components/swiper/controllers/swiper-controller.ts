@@ -18,13 +18,13 @@ export abstract class SwiperController {
    * 卡片总数
    * @internal
    */
-  cardCount = 0;
+  slideCount = 0;
   swiper: Swiper;
 
   /**
    * 卡片数组
    */
-  cardItems: PlayerVFXItem[] = [];
+  slideItems: PlayerVFXItem[] = [];
   controlElements: HTMLElement[] = [];
   /**
    * 轮播参数
@@ -39,7 +39,7 @@ export abstract class SwiperController {
   videoTextures: Texture[] = [];
   hasEffectItem = false;
   hideDistanceRatio = 1; // 需要的情况下，可以调整判断隐藏的距离比例
-  cardIndexList: number[] = [];
+  slideIndexList: number[] = [];
 
   /**
    *
@@ -63,30 +63,30 @@ export abstract class SwiperController {
    * @returns
    */
   getItems () {
-    return this.cardItems;
+    return this.slideItems;
   }
 
   /**
    * 执行合成轮播
    */
-  run (cardItems: PlayerVFXItem[] = [], controlElements: HTMLElement[] = []) {
-    if (this.cardCount === 0) {
-      this.cardCount = cardItems.length || controlElements.length;
+  run (slideItems: PlayerVFXItem[] = [], controlElements: HTMLElement[] = []) {
+    if (this.slideCount === 0) {
+      this.slideCount = slideItems.length || controlElements.length;
     }
 
-    this.cardItems = cardItems;
+    this.slideItems = slideItems;
     this.controlElements = controlElements;
     this.init();
 
-    this.updateTransform(0, this.swiper.getCurrentIndex() / this.swiper.cardCount);
+    this.updateTransform(0, this.swiper.getCurrentIndex() / this.swiper.slideCount);
   }
 
-  reOrderTextureList (texturesList: TextureData[], initCardIndex: number) {
+  reOrderTextureList (texturesList: TextureData[], initSlideIndex: number) {
     // 先放当前关卡，再放左右关卡
-    const newIndexList = [initCardIndex, (initCardIndex - 1 + this.cardCount) % this.cardCount, (initCardIndex + 1) % this.cardCount];
+    const newIndexList = [initSlideIndex, (initSlideIndex - 1 + this.slideCount) % this.slideCount, (initSlideIndex + 1) % this.slideCount];
 
     // 再放剩余关卡
-    for (let i = 0; i < this.cardCount; i++) {
+    for (let i = 0; i < this.slideCount; i++) {
       if (!newIndexList.includes(i)) {
         newIndexList.push(i);
       }
@@ -94,7 +94,7 @@ export abstract class SwiperController {
 
     const reOrderTexturesList: TextureData[] = [];
 
-    for (let i = 0; i < this.cardCount; i++) {
+    for (let i = 0; i < this.slideCount; i++) {
       const index = newIndexList[i];
       const itemList = texturesList.filter(item => item.index === index);
 
@@ -111,19 +111,19 @@ export abstract class SwiperController {
       imgMaxWaitLoadSecond?: number,
       videoMaxWaitLoadSecond?: number,
       status?: { canceled: boolean },
-      // onOneTextureLoaded?: (data: {arrIndex: number, cardIndex: number}) => void,
-      onLoadingTextureLoaded?: (data: { arrIndex: number, cardIndex: number }) => void,
-      onVideoFallbackToImage?: (data: { arrIndex: number, cardIndex: number, errMsg: string }) => void,
-      onContentTextureLoaded?: (data: { arrIndex: number, cardIndex: number, video?: HTMLVideoElement, textureData: TextureData }) => void,
-      initCardIndex?: number,
+      // onOneTextureLoaded?: (data: {arrIndex: number, slideIndex: number}) => void,
+      onLoadingTextureLoaded?: (data: { arrIndex: number, slideIndex: number }) => void,
+      onVideoFallbackToImage?: (data: { arrIndex: number, slideIndex: number, errMsg: string }) => void,
+      onContentTextureLoaded?: (data: { arrIndex: number, slideIndex: number, video?: HTMLVideoElement, textureData: TextureData }) => void,
+      initSlideIndex?: number,
     } = {},
   ) {
-    const { maxWaitLoadSecond = 10, status, onLoadingTextureLoaded, imgMaxWaitLoadSecond, videoMaxWaitLoadSecond, onVideoFallbackToImage, initCardIndex, onContentTextureLoaded } = options;
+    const { maxWaitLoadSecond = 10, status, onLoadingTextureLoaded, imgMaxWaitLoadSecond, videoMaxWaitLoadSecond, onVideoFallbackToImage, initSlideIndex, onContentTextureLoaded } = options;
     const textureMap = new Map<string, Texture>();
     const loadingTextures: Texture[] = [];
 
-    if (initCardIndex !== undefined) {
-      texturesList = this.reOrderTextureList(texturesList, initCardIndex);
+    if (initSlideIndex !== undefined) {
+      texturesList = this.reOrderTextureList(texturesList, initSlideIndex);
     }
 
     const jobs = texturesList.map(async ({ type, url, itemName, index, uniformName, texture, videoSource, loadingImg }, arrIndex) => {
@@ -140,7 +140,7 @@ export abstract class SwiperController {
           if (!value) {
             throw new Error('setUpTexture load timeout, video downgradeImgUrl: ' + videoSource.downgradeImgUrl);
           }
-          onVideoFallbackToImage?.({ arrIndex, cardIndex: index, errMsg });
+          onVideoFallbackToImage?.({ arrIndex, slideIndex: index, errMsg });
           type = 'image';
         } else {
           throw new Error('setUpTexture load timeout, url = ' + url);
@@ -149,7 +149,7 @@ export abstract class SwiperController {
         return value;
       };
 
-      const item = findItemByName(this.cardItems[index], itemName);
+      const item = findItemByName(this.slideItems[index], itemName);
 
       assertExist(item, 'setUpTexture item');
       let prevTexture: Texture | null = null;
@@ -186,7 +186,7 @@ export abstract class SwiperController {
           return;
         }
         textureMap.set(loadingImg, loadingTexture);
-        onLoadingTextureLoaded?.({ arrIndex, cardIndex: index });
+        onLoadingTextureLoaded?.({ arrIndex, slideIndex: index });
         // 只有自己设置的texture才dispose，原来自带的不要动，防止报destroyed item cannot be used again
         // @ts-expect-error
         if (prevTexture?._url) {
@@ -196,7 +196,7 @@ export abstract class SwiperController {
       }
 
       texture ??= url ? textureMap.get(url) : undefined;
-      const autoPlay = !this.swiper.autoPause || index === (initCardIndex ?? this.swiper.getCurrentIndex());
+      const autoPlay = !this.swiper.autoPause || index === (initSlideIndex ?? this.swiper.getCurrentIndex());
       let value: Texture | void;
 
       if (!texture) {
@@ -251,7 +251,7 @@ export abstract class SwiperController {
         prevTexture = null;
       }
 
-      onContentTextureLoaded?.({ arrIndex, cardIndex: index, textureData: texturesList[arrIndex],
+      onContentTextureLoaded?.({ arrIndex, slideIndex: index, textureData: texturesList[arrIndex],
         // @ts-expect-error
         video: texture.source.video });
 
@@ -323,9 +323,9 @@ export abstract class SwiperController {
     }
   }
 
-  setUpUniforms (uniforms: { itemName: string, name: string, value: any, type: 'number' | 'vector4', cardIndex: number }[]) {
-    uniforms.forEach(async ({ itemName, name, value, type, cardIndex }) => {
-      const item = findItemByName(this.cardItems[cardIndex], itemName);
+  setUpUniforms (uniforms: { itemName: string, name: string, value: any, type: 'number' | 'vector4', slideIndex: number }[]) {
+    uniforms.forEach(async ({ itemName, name, value, type, slideIndex }) => {
+      const item = findItemByName(this.slideItems[slideIndex], itemName);
 
       assertExist(item, 'setUpUniforms item');
       const component = await this.getComponent(item, EffectComponent);
@@ -353,30 +353,30 @@ export abstract class SwiperController {
     }
   }
 
-  onWillGotoCard (cardIndex: number) {
+  onWillGotoSlide (slideIndex: number) {
     if (!this.videos.length) {
       return;
     }
     if (!this.swiper.autoPause) {
       return;
     }
-    this.resumeVideo(cardIndex);
+    this.resumeVideo(slideIndex);
   }
 
-  resumeVideo (cardIndex: number) {
+  resumeVideo (slideIndex: number) {
     this.videos.forEach((video, index) => {
-      if (index !== cardIndex) {
+      if (index !== slideIndex) {
         video?.pause();
       }
     });
-    void this.videos[cardIndex]?.play();
+    void this.videos[slideIndex]?.play();
   }
 
   resumePlayCurrentVideo () {
     this.resumeVideo(this.swiper.getCurrentIndex());
   }
 
-  // async onAfterPlayEnterAnimation (iniCardIndex: number) {}
+  // async onAfterPlayEnterAnimation (iniSlideIndex: number) {}
 
   updateValue (key: string, value: number) {}
 
@@ -393,7 +393,7 @@ export abstract class SwiperController {
       this.updateDOMTransform(data);
     }
 
-    // this.onTransform(this.cardItems);
+    // this.onTransform(this.slideItems);
     if (this.autoHide) {
       this.handleVisible();
     }
@@ -404,7 +404,7 @@ export abstract class SwiperController {
     const { positions, rotations } = data;
 
     for (let i = 0; i < positions.length; i++) {
-      const composition = this.cardItems[i];
+      const composition = this.slideItems[i];
 
       if (!composition) {
         return;
@@ -442,12 +442,12 @@ export abstract class SwiperController {
     }
   }
 
-  onSlidePark (cardIndex: number) {
-    void this.videos[cardIndex]?.play();
+  onSlidePark (slideIndex: number) {
+    void this.videos[slideIndex]?.play();
   }
 
-  onSlideOut (cardIndex: number, progress: number, data: { speed?: number, leftCount?: number, isDrag?: boolean }) {}
-  onSlideIn (cardIndex: number, progress: number, data: { speed?: number, leftCount?: number, isDrag?: boolean }) {}
+  onSlideOut (slideIndex: number, progress: number, data: { speed?: number, leftCount?: number, isDrag?: boolean }) {}
+  onSlideIn (slideIndex: number, progress: number, data: { speed?: number, leftCount?: number, isDrag?: boolean }) {}
   onProgress (progress: number, data: { speed?: number, dragDirection: number, totalDirection: number, progressInSlide: number }) {}
   onDragDirectionReverse () {}
   onDragExceedSlide () {}
@@ -471,12 +471,12 @@ export abstract class SwiperController {
     }
     const canvasWidth = canvasBounding.width * widthRatio * this.hideDistanceRatio;
 
-    this.cardItems.forEach((cardItem, index) => {
+    this.slideItems.forEach((slideItem, index) => {
       // 超出屏幕中心一屏的合成隐藏
-      const { x } = cardItem.transform.position;
+      const { x } = slideItem.transform.position;
       const visible = x > -canvasWidth && x < canvasWidth;
 
-      cardItem.setVisible(visible);
+      slideItem.setVisible(visible);
     });
   }
 
@@ -518,7 +518,7 @@ export abstract class SwiperController {
     return 0;
   }
 
-  willPlayBack (progressInCard: number): boolean | void {}
+  willPlayBack (progressInSlide: number): boolean | void {}
 
   dispose () {}
 }

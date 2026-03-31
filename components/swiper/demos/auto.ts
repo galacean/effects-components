@@ -28,7 +28,7 @@ const url = 'https://mdn.alipayobjects.com/mars/afts/file/A*npprQL993nUAAAAARoAA
 
     // 更多回调，可点击handers进去查看SwiperHandlers的定义
     swiperManager.handlers = {
-      onWillGotoCard (index) {
+      onWillGotoSlide (index) {
         console.info('swiper goto index', index);
       },
       onSlidePark (index) {

@@ -15,7 +15,7 @@ const mainJSON = 'https://mdn.alipayobjects.com/mars/afts/file/A*SrjeQq3eoMYAAAA
       interactive: true,
     });
 
-    const initCardIndex = 1;
+    const initSlideIndex = 1;
     // 加载合成，可以先只加载主场景和初始幻灯片
     const composition = await player.loadScene(mainJSON);
 
@@ -24,15 +24,15 @@ const mainJSON = 'https://mdn.alipayobjects.com/mars/afts/file/A*SrjeQq3eoMYAAAA
       composition: composition,
       player: player,
       options: {
-        initCardIndex,
+        initSlideIndex,
         effectTemplate: EffectTemplate.circleFront,
         loop: true,
         radius: 3,
         // autoPlay: false,
       },
       handlers: {
-        onWillGotoCard: index => {
-          console.info('onWillGotoCard', index);
+        onWillGotoSlide: index => {
+          console.info('onWillGotoSlide', index);
         },
       },
     });

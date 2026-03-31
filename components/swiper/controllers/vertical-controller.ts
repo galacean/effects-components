@@ -7,30 +7,30 @@ export class VerticalController extends SwiperController {
   override direction = 'vertical' as const;
   getTransformByProgress ({ progressInSlide }: { progressInSlide: number }) {
     const { slideDistance, loop } = this.options;
-    const positions = Array.from({ length: this.cardCount }, () => [0, 0, 0] as [number, number, number]);
-    const cardIndexList = [];
-    const { cardCount } = this.swiper;
+    const positions = Array.from({ length: this.slideCount }, () => [0, 0, 0] as [number, number, number]);
+    const slideIndexList = [];
+    const { slideCount } = this.swiper;
     const currentIndex = this.swiper.getCurrentIndex();
-    let currentCardInListIndex = currentIndex;
+    let currentSlideInListIndex = currentIndex;
 
     if (loop) {
-      const half = Math.floor(cardCount / 2);
-      const adjustLeft = cardCount % 2 === 0 ? 1 : 0; // 卡片是偶数情况下，让右边多摆一个卡片
+      const half = Math.floor(slideCount / 2);
+      const adjustLeft = slideCount % 2 === 0 ? 1 : 0; // 卡片是偶数情况下，让右边多摆一个卡片
 
-      for (let i = 0; i < this.cardCount; i++) {
-        const index = (currentIndex - half + i + cardCount + adjustLeft) % cardCount;
+      for (let i = 0; i < this.slideCount; i++) {
+        const index = (currentIndex - half + i + slideCount + adjustLeft) % slideCount;
 
-        cardIndexList.push(index);
+        slideIndexList.push(index);
         if (index === currentIndex) {
-          currentCardInListIndex = i;
+          currentSlideInListIndex = i;
         }
       }
     }
 
-    for (let i = 0; i < this.cardCount; i++) {
-      const cardIndex = loop ? cardIndexList[i] : i;
+    for (let i = 0; i < this.slideCount; i++) {
+      const slideIndex = loop ? slideIndexList[i] : i;
 
-      positions[cardIndex][1] = (i - currentCardInListIndex) * slideDistance + progressInSlide * slideDistance;
+      positions[slideIndex][1] = (i - currentSlideInListIndex) * slideDistance + progressInSlide * slideDistance;
     }
 
     return { positions };

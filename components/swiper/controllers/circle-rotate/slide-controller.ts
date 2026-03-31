@@ -17,9 +17,9 @@ export class SlideController {
   initRotationY = 0;
   static initRotationX = -25;
   initQuaternion: EffectsMath.Quaternion;
-  cardRotateAngle = 0;
-  cardParkRotationRatio: number[] = [];
-  progressInCard = 0;
+  slideRotateAngle = 0;
+  slideParkRotationRatio: number[] = [];
+  progressInSlide = 0;
 
   constructor (
     item: PlayerVFXItem,
@@ -29,8 +29,8 @@ export class SlideController {
     videoUrl: string,
     composition: Composition,
     options: SwiperData,
-    cardRotateAngle: number,
-    cardParkRotationRatio: number[],
+    slideRotateAngle: number,
+    slideParkRotationRatio: number[],
   ) {
     this.item = item;
     this.centerItem = centerItem;
@@ -41,8 +41,8 @@ export class SlideController {
     this.options = options;
     this.radius = options.radius;
     this.initRotationY = 0;
-    this.cardRotateAngle = cardRotateAngle;
-    this.cardParkRotationRatio = cardParkRotationRatio;
+    this.slideRotateAngle = slideRotateAngle;
+    this.slideParkRotationRatio = slideParkRotationRatio;
   }
 
   init () {
@@ -57,21 +57,21 @@ export class SlideController {
     material.setVector4('_AxisPosition', new EffectsMath.Vector4(0, 0, -(2.2 + this.slideIndex * 0.2), 0));
   }
 
-  updateCenterRotation (progressInCard: number, progressInTotal: number, speed?: number) {
+  updateCenterRotation (progressInSlide: number, progressInTotal: number, speed?: number) {
     if (speed === undefined) { // fastPlay快速滑动使用线性
-      progressInCard = this.easeProgress(progressInCard);
+      progressInSlide = this.easeProgress(progressInSlide);
     }
-    this.progressInCard = progressInCard;
+    this.progressInSlide = progressInSlide;
     let progress = 0;
     const piece = 1 / this.slideCount;
     let index = (Math.floor(progressInTotal / piece + Number.EPSILON) - this.slideIndex + this.slideCount) % this.slideCount;
 
-    if (progressInCard === 1 || progressInCard === -1) {
+    if (progressInSlide === 1 || progressInSlide === -1) {
       index--;
     }
-    const [min, max] = [this.cardParkRotationRatio[index], this.cardParkRotationRatio[index + 1]];
+    const [min, max] = [this.slideParkRotationRatio[index], this.slideParkRotationRatio[index + 1]];
 
-    progress = (progressInCard <= 0 ? min : max) + (max - min) * -progressInCard;
+    progress = (progressInSlide <= 0 ? min : max) + (max - min) * -progressInSlide;
     assertExist(this.centerItem);
     const { rotation } = this.centerItem.transform;
 
@@ -122,14 +122,14 @@ export class SlideController {
   get currentAngle () {
     const component = this.item.getComponent(EffectComponent);
 
-    return component.material.getFloat('_Angle') ?? this.cardRotateAngle;
+    return component.material.getFloat('_Angle') ?? this.slideRotateAngle;
   }
 
   async fromRotateToAlign (progress: number, toQuaternion: number[]) {
     const from = this.initQuaternion.clone();
     const to = new EffectsMath.Quaternion(...toQuaternion);
     const toAngle = this.currentAngle;
-    const fromAngle = this.cardRotateAngle;
+    const fromAngle = this.slideRotateAngle;
     const toBlendFactor = 0;
     const fromBlendFactor = 1;
     const quat = from.slerp(to, progress);
